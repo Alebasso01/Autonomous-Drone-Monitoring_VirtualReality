@@ -19,11 +19,11 @@
 # Fortran module files
 *.mod
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# Compiled Static libraries (commented because we need some crucial Colosseum/AirSim libraries)
+# *.lai
+# *.la
+# *.a
+# *.lib
 
 # Executables
 *.exe
