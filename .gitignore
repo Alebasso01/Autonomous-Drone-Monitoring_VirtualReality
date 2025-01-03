@@ -26,10 +26,10 @@
 *.lib
 
 # Don't ignore libraries in AirLib!
-!*/AirLib/**/*.lai
-!*/AirLib/**/*.la
-!*/AirLib/**/*.a
-!*/AirLib/**/*.lib
+!**/AirLib/**/*.lai
+!**/AirLib/**/*.la
+!**/AirLib/**/*.a
+!**/AirLib/**/*.lib
 
 # Executables
 *.exe
