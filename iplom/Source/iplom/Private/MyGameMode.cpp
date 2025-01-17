@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "MyGameMode.h"
 
 AMyGameMode::AMyGameMode()
@@ -19,7 +16,6 @@ void AMyGameMode::BeginPlay()
     Super::BeginPlay();
 
     // Default Position and Rotation
-    // FVector SpawnPosition = FVector(9460.0f, -47140.0f, -183510.0f);
     FVector SpawnPosition = FVector(0.0f, 0.0f, 0.0f);
     FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
 
@@ -28,18 +24,27 @@ void AMyGameMode::BeginPlay()
     MyTank = Cast<ATank>(GetWorld()->SpawnActor<ATank>(TankClass, SpawnPosition, Rotation));
     MyFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, SpawnPosition + FVector(0.0f, 0.0f, 900.0f), Rotation));
 
-    GetWorldTimerManager().SetTimer(Timer, this, &AMyGameMode::MoveFluid, 4.0f, false);
+    if (MyFluid)
+    {
+        // No need to initialize movement here, since MovementSpeed is now global
+        // Set the fluid movement to be updated every frame
+        GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMyGameMode::MoveFluid, 0.02f, true);
+    }
 }
 
 void AMyGameMode::MoveFluid()
 {
-    MyFluid->SetMovementEndPosition(MyFluid->GetActorLocation() + FVector(0.0f, 0.0f, 400.0f));
-    MyFluid->setMoving(true);
-    GetWorldTimerManager().SetTimer(Timer, this, &AMyGameMode::StopFluid, 10.0f, false);
+    if (MyFluid)
+    {
+        // Call MoveUp or MoveDown based on bMovingUp flag
+        if (MyFluid->bMovingUp)
+        {
+            MyFluid->MoveUp(GetWorld()->GetDeltaSeconds());
+        }
+        else
+        {
+            MyFluid->MoveDown(GetWorld()->GetDeltaSeconds());
+        }
+    }
 }
 
-void AMyGameMode::StopFluid()
-{
-    MyFluid->setMoving(false);
-    GetWorldTimerManager().SetTimer(Timer, this, &AMyGameMode::MoveFluid, 4.0f, false);
-}

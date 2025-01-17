@@ -46,23 +46,24 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
     UNiagaraComponent* NiagaraComponent;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
-        bool Moving;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
-        FVector MovementEndPosition;
+    // Function to handle the movement logic
+    // Move the actor up and down based on movement direction
+    void MoveUp(float DeltaTime);
+    void MoveDown(float DeltaTime);
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
-        FVector OriginPosition;
+    // Target positions for up and down movement
+    FVector OriginPosition;
+    FVector EndPositionUp;
+    FVector EndPositionDown;
 
+    // Boolean to track the current direction (up or down)
+    float MovementRange;
+    float MovementSpeed;
+    bool bMovingUp;
     // Update the Niagara World Grid Extent (Z-axis height) based on FluidHeight
     void UpdateNiagaraGridExtent(float DeltaTime);
 
-    void MoveUp();
-    void MoveDown();
-
-    void SetMovementEndPosition(FVector NextEndPosition);
-    void setMoving(bool NextMovingState);
-
+    
 
 };

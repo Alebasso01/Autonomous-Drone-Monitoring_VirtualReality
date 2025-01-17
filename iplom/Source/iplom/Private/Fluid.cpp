@@ -15,22 +15,32 @@ AFluid::AFluid()
     FluidConsumptionRate = 5.0f;  // Example consumption rate (height per second)
     MaxFluidHeight = 1000.0f;  // Example max height
 
-    Moving = false;
-    MovementEndPosition = FVector();
-    OriginPosition = FVector(0.0f, 0.0f, 900.0f);
-
     // Create Niagara Component
     // NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent"));
     // RootComponent = NiagaraComponent;  // Set Niagara as root component
 
     NiagaraSystem = nullptr;  // Initialize Niagara System to null
     NiagaraComponent = nullptr;  // Initialize Niagara Component to null
+
+    MovementRange = 400.0f; // Default range
+    MovementSpeed = 100.0f; // Default speed
+    bMovingUp = true;
 }
 
 // Called when the game starts or when spawned
 void AFluid::BeginPlay()
 {
 	Super::BeginPlay();
+
+    // Set the origin position
+    OriginPosition = GetActorLocation();
+
+    // Calculate the end positions for up and down movement
+    EndPositionUp = OriginPosition + FVector(0, 0, 400.0f);
+    EndPositionDown = OriginPosition - FVector(0, 0, 400.0f);
+
+    // Set initial direction
+    bMovingUp = true;
 
     // get a pointer of the niagara system of this actor
     //NiagaraSystem = Cast<UNiagaraSystem>(NiagaraComponent->Asset);
@@ -62,13 +72,17 @@ void AFluid::Tick(float DeltaTime)
     // Clamp the fluid height to ensure it doesn't go below 0 or above the max height
     FluidHeight = FMath::Clamp(FluidHeight, 0.0f, MaxFluidHeight);
 
-    if (Moving) {
-
-        if (Moving && (MovementEndPosition.Z >= this->GetActorLocation().Z || this->GetActorLocation().Z <= OriginPosition.Z))
-            MoveUp();
-        else if (Moving && (MovementEndPosition.Z <= this->GetActorLocation().Z || this->GetActorLocation().Z >= OriginPosition.Z))
-            MoveDown();
+    // Handle fluid movement
+    if (bMovingUp)
+    {
+        MoveUp(DeltaTime);
     }
+    else
+    {
+        MoveDown(DeltaTime);
+    }
+
+    
 
     // Update the Niagara system with the new fluid height
     // UpdateNiagaraGridExtent(DeltaTime);
@@ -88,42 +102,42 @@ void AFluid::UpdateNiagaraGridExtent(float DeltaTime)
     }
 }
 
-void AFluid::MoveUp()
+// Move the fluid up
+void AFluid::MoveUp(float DeltaTime)
 {
-    const FVector StartPosition = this->GetActorLocation();
+    FVector CurrentPosition = GetActorLocation();
+    FVector TargetPosition = EndPositionUp;
 
-    if (this->GetActorLocation().Z < MovementEndPosition.Z) {
-        const auto Position = FMath::VInterpConstantTo(StartPosition, MovementEndPosition, GetWorld()->GetDeltaSeconds(), 400.0f);
-        this->SetActorLocation(Position);
-    }
-    else
+    // If the actor reaches or exceeds the end position, change direction
+    if (CurrentPosition.Z >= EndPositionUp.Z)
     {
-        SetMovementEndPosition(this->GetActorLocation() - FVector(0.0f, 0.0f, 400.0f));
-        MoveDown();
+        bMovingUp = false;
     }
+
+    // Interpolate towards the target position for smooth movement
+    FVector NewPosition = FMath::VInterpConstantTo(CurrentPosition, TargetPosition, DeltaTime, MovementSpeed);
+
+    // Set the new position
+    SetActorLocation(NewPosition);
+
 }
 
-void AFluid::MoveDown()
+// Move the fluid down
+void AFluid::MoveDown(float DeltaTime)
 {
-    const FVector StartPosition = this->GetActorLocation();
+    FVector CurrentPosition = GetActorLocation();
+    FVector TargetPosition = EndPositionDown;
 
-    if (this->GetActorLocation().Z > MovementEndPosition.Z) {
-        const auto Position = FMath::VInterpConstantTo(StartPosition, MovementEndPosition, GetWorld()->GetDeltaSeconds(), 400.0f);
-        this->SetActorLocation(Position);
-    }
-    else
+    // If the actor reaches or falls below the end position, change direction
+    if (CurrentPosition.Z <= EndPositionDown.Z)
     {
-        SetMovementEndPosition(this->GetActorLocation() + FVector(0.0f, 0.0f, 400.0f));
-        // MoveUp();
+        bMovingUp = true;
     }
-}
 
-void AFluid::SetMovementEndPosition(FVector NextEndPosition)
-{
-    MovementEndPosition = NextEndPosition;
-}
+    // Interpolate towards the target position for smooth movement
+    FVector NewPosition = FMath::VInterpConstantTo(CurrentPosition, TargetPosition, DeltaTime, MovementSpeed);
 
-void AFluid::setMoving(bool NextMovingState)
-{
-    Moving = NextMovingState;
+    // Set the new position
+    SetActorLocation(NewPosition);
+
 }

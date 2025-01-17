@@ -51,5 +51,4 @@ class IPLOM_API AMyGameMode : public AGameMode
 	virtual void BeginPlay() override;
 
 	void MoveFluid();
-	void StopFluid();
 };
