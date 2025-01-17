@@ -46,7 +46,23 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
     UNiagaraComponent* NiagaraComponent;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
+        bool Moving;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
+        FVector MovementEndPosition;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
+        FVector OriginPosition;
+
     // Update the Niagara World Grid Extent (Z-axis height) based on FluidHeight
     void UpdateNiagaraGridExtent(float DeltaTime);
+
+    void MoveUp();
+    void MoveDown();
+
+    void SetMovementEndPosition(FVector NextEndPosition);
+    void setMoving(bool NextMovingState);
+
 
 };

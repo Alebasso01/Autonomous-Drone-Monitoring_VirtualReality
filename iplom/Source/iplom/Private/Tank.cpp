@@ -25,3 +25,12 @@ void ATank::Tick(float DeltaTime)
 
 }
 
+void ATank::Move()
+{
+	const FVector StartPosition = this->GetActorLocation();
+	const FVector EndPosition = StartPosition + FVector(0.0f, 0.0f, 400.0f);
+	const auto Position = FMath::VInterpConstantTo(StartPosition, EndPosition, GetWorld()->GetDeltaSeconds(), 100.0f);
+
+	this->SetActorLocation(Position);
+}
+

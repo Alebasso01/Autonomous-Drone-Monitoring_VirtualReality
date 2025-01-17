@@ -15,11 +15,16 @@ AFluid::AFluid()
     FluidConsumptionRate = 5.0f;  // Example consumption rate (height per second)
     MaxFluidHeight = 1000.0f;  // Example max height
 
+    Moving = false;
+    MovementEndPosition = FVector();
+    OriginPosition = FVector(0.0f, 0.0f, 900.0f);
+
     // Create Niagara Component
-    NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent"));
-    RootComponent = NiagaraComponent;  // Set Niagara as root component
+    // NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent"));
+    // RootComponent = NiagaraComponent;  // Set Niagara as root component
 
     NiagaraSystem = nullptr;  // Initialize Niagara System to null
+    NiagaraComponent = nullptr;  // Initialize Niagara Component to null
 }
 
 // Called when the game starts or when spawned
@@ -57,8 +62,16 @@ void AFluid::Tick(float DeltaTime)
     // Clamp the fluid height to ensure it doesn't go below 0 or above the max height
     FluidHeight = FMath::Clamp(FluidHeight, 0.0f, MaxFluidHeight);
 
+    if (Moving) {
+
+        if (Moving && (MovementEndPosition.Z >= this->GetActorLocation().Z || this->GetActorLocation().Z <= OriginPosition.Z))
+            MoveUp();
+        else if (Moving && (MovementEndPosition.Z <= this->GetActorLocation().Z || this->GetActorLocation().Z >= OriginPosition.Z))
+            MoveDown();
+    }
+
     // Update the Niagara system with the new fluid height
-    UpdateNiagaraGridExtent(DeltaTime);
+    // UpdateNiagaraGridExtent(DeltaTime);
 }
 
 // Update the World Grid Extent (height) in the Niagara system
@@ -73,4 +86,44 @@ void AFluid::UpdateNiagaraGridExtent(float DeltaTime)
         // Imposta il parametro 'WorldGridExtent' nel Niagara Component
         NiagaraComponent->SetVectorParameter(TEXT("World Grid Extents"), GridExtent);
     }
+}
+
+void AFluid::MoveUp()
+{
+    const FVector StartPosition = this->GetActorLocation();
+
+    if (this->GetActorLocation().Z < MovementEndPosition.Z) {
+        const auto Position = FMath::VInterpConstantTo(StartPosition, MovementEndPosition, GetWorld()->GetDeltaSeconds(), 400.0f);
+        this->SetActorLocation(Position);
+    }
+    else
+    {
+        SetMovementEndPosition(this->GetActorLocation() - FVector(0.0f, 0.0f, 400.0f));
+        MoveDown();
+    }
+}
+
+void AFluid::MoveDown()
+{
+    const FVector StartPosition = this->GetActorLocation();
+
+    if (this->GetActorLocation().Z > MovementEndPosition.Z) {
+        const auto Position = FMath::VInterpConstantTo(StartPosition, MovementEndPosition, GetWorld()->GetDeltaSeconds(), 400.0f);
+        this->SetActorLocation(Position);
+    }
+    else
+    {
+        SetMovementEndPosition(this->GetActorLocation() + FVector(0.0f, 0.0f, 400.0f));
+        // MoveUp();
+    }
+}
+
+void AFluid::SetMovementEndPosition(FVector NextEndPosition)
+{
+    MovementEndPosition = NextEndPosition;
+}
+
+void AFluid::setMoving(bool NextMovingState)
+{
+    Moving = NextMovingState;
 }
