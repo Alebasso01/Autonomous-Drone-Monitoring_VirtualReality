@@ -13,7 +13,7 @@ AFluid::AFluid()
     NiagaraSystem = nullptr;  
     NiagaraComponent = nullptr;  
 
-    MovementSpeed = 30.0f; 
+    MovementSpeed = 100.0f; 
     bMovingUp = true;
     bStopMoving = false;
     bLeacking = false;
@@ -118,7 +118,7 @@ void AFluid::CheckForFountainSpawn()
             if (RandomID == 5)
             {
                 bLeacking = true;
-                GameMode->UpdateFountainVisibility();
+                GameMode->UpdateFountainVisibility(this);
             }
         }
         else if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) > Tolerance && bLeacking)
