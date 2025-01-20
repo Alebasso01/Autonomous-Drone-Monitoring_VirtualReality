@@ -12,7 +12,7 @@ ARooftop::ARooftop()
     MaxRotation = 30.0f;
     OriginalRotation = 0.0f;
     RotationSpeed = 5.0f;
-    MovementSpeed = 100.0f;  
+    MovementSpeed = 30.0f;  
     FluidReference = nullptr;
 
 }
@@ -26,7 +26,7 @@ void ARooftop::BeginPlay()
 
     // movement endpoints
     EndPositionUp = OriginPosition + FVector(0, 0, 100);
-    EndPositionDown = OriginPosition - FVector(0, 0, 700);
+    EndPositionDown = OriginPosition - FVector(0, 0, 200);
 	
 }
 

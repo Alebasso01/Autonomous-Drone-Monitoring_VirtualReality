@@ -56,6 +56,9 @@ public:
     UPROPERTY(EditAnywhere, Category = "Fluid")
     bool bLeacking;
 
+    UPROPERTY(EditAnywhere, Category = "Fluid")
+    int32 RandomID;
+
     float MovementSpeed;
 
     void SetStopMoving(bool NewMovingState);
