@@ -47,8 +47,8 @@ public:
     float MovementSpeed;
 
     bool bMovingUp;
+    bool bStopMoving;
 
-
-    
+    void SetStopMoving(bool NewMovingState);
 
 };

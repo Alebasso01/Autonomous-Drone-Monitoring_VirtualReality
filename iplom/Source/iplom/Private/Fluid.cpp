@@ -15,6 +15,7 @@ AFluid::AFluid()
     MovementSpeed = 100.0f; 
     MovementRange = 400.0f;
     bMovingUp = true;
+    bStopMoving = false;
 }
 
 // Called when the game starts or when spawned
@@ -40,13 +41,12 @@ void AFluid::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-    if (bMovingUp)
+    if (!bStopMoving)
     {
-        MoveUp(DeltaTime);
-    }
-    else
-    {
-        MoveDown(DeltaTime);
+        if (bMovingUp)
+            MoveUp(DeltaTime);
+        else
+            MoveDown(DeltaTime);
     }
 
 }
@@ -91,4 +91,9 @@ void AFluid::MoveDown(float DeltaTime)
     // Set the new position
     SetActorLocation(NewPosition);
 
+}
+
+void AFluid::SetStopMoving(bool NewMovingState)
+{
+    bStopMoving = NewMovingState;
 }

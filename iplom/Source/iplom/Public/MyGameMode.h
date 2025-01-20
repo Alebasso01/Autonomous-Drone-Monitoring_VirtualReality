@@ -56,4 +56,14 @@ class IPLOM_API AMyGameMode : public AGameMode
 	virtual void BeginPlay() override;
 
 	void MoveFluid();
+	//void SpawnFountain();
+	//bool ShouldSpawnFountain();
+	bool bFountainSpawned;
+
+	void UpdateFountainVisibility();
+
+	
+
+
+
 };
