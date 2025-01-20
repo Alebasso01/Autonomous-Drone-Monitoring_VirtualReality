@@ -36,16 +36,16 @@ class IPLOM_API AMyGameMode : public AGameMode
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
 		AFluid* MyFluid;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tank")
 		ATank* MyTank;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fountain")
 		AFountain* MyFountain;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Roof")
 		ARooftop* MyRoof;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Timer")
 		FTimerHandle Timer;
 
 
@@ -55,11 +55,9 @@ class IPLOM_API AMyGameMode : public AGameMode
 
 	virtual void BeginPlay() override;
 
-	void MoveFluid();
-	//void SpawnFountain();
-	//bool ShouldSpawnFountain();
 	bool bFountainSpawned;
 
+	void MoveFluid();
 	void UpdateFountainVisibility();
 
 	

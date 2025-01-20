@@ -36,20 +36,7 @@ public:
     UNiagaraComponent* NiagaraComponent;
 
     UPROPERTY(EditAnywhere, Category = "Fluid")
-    float MovementRange;
-
-    UPROPERTY(EditAnywhere, Category = "Fluid")
     AMyGameMode* GameMode;
-
-
-    void MoveUp(float DeltaTime);
-    void MoveDown(float DeltaTime);
-
-    FVector OriginPosition;
-    FVector EndPositionUp;
-    FVector EndPositionDown;
-
-    float MovementSpeed;
 
     UPROPERTY(EditAnywhere, Category = "Fluid")
     bool bMovingUp;
@@ -57,10 +44,27 @@ public:
     UPROPERTY(EditAnywhere, Category = "Fluid")
     bool bStopMoving;
 
+    UPROPERTY(EditAnywhere, Category = "Fluid")
+    FVector OriginPosition;
+
+    UPROPERTY(EditAnywhere, Category = "Fluid")
+    FVector EndPositionUp;
+
+    UPROPERTY(EditAnywhere, Category = "Fluid")
+    FVector EndPositionDown;
+
+    UPROPERTY(EditAnywhere, Category = "Fluid")
+    bool bLeacking;
+
+    float MovementSpeed;
+
     void SetStopMoving(bool NewMovingState);
 
     void CheckForFountainSpawn();
 
     void SetGameMode(AMyGameMode* InputGameMode);
+
+    void MoveUp(float DeltaTime);
+    void MoveDown(float DeltaTime);
 
 };

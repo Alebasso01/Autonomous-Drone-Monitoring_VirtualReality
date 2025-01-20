@@ -37,9 +37,6 @@ public:
 	float MovementSpeed;
 
 	UPROPERTY(EditAnywhere, Category = "Rooftop Movement")
-	float MovementRange;
-
-	UPROPERTY(EditAnywhere, Category = "Rooftop Movement")
 	AFluid* FluidReference;
 
 

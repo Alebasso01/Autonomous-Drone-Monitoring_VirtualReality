@@ -14,9 +14,9 @@ AFluid::AFluid()
     NiagaraComponent = nullptr;  
 
     MovementSpeed = 100.0f; 
-    MovementRange = 400.0f;
     bMovingUp = true;
     bStopMoving = false;
+    bLeacking = false;
     
     GameMode = nullptr;
 }
@@ -30,8 +30,8 @@ void AFluid::BeginPlay()
     OriginPosition = GetActorLocation();
 
     // Calculate the end positions for up and down movement
-    EndPositionUp = OriginPosition + FVector(0, 0, MovementRange);
-    EndPositionDown = OriginPosition - FVector(0, 0, MovementRange);
+    EndPositionUp = OriginPosition + FVector(0, 0, 100);
+    EndPositionDown = OriginPosition - FVector(0, 0, 700);
 
     // Set initial direction
     bMovingUp = true;
@@ -105,15 +105,18 @@ void AFluid::SetStopMoving(bool NewMovingState)
 
 void AFluid::CheckForFountainSpawn()
 {
-    if (bStopMoving == false)
+    if (!bStopMoving)
     {
-
         FVector CurrentPosition = GetActorLocation();
-        float Tolerance = 2.0f;
+        float Tolerance = 0.05f;
 
-        if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) <= Tolerance)
+        if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) <= Tolerance && !bLeacking)
+        {
+            bLeacking = true;
             GameMode->UpdateFountainVisibility();
-
+        }
+        else if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) > Tolerance && bLeacking)
+            bLeacking = false;
     }
 }
 
