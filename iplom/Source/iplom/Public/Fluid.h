@@ -8,6 +8,8 @@
 #include "NiagaraSystem.h"
 #include "Fluid.generated.h"
 
+class AMyGameMode;
+
 UCLASS()
 class IPLOM_API AFluid : public AActor
 {
@@ -36,6 +38,9 @@ public:
     UPROPERTY(EditAnywhere, Category = "Fluid")
     float MovementRange;
 
+    UPROPERTY(EditAnywhere, Category = "Fluid")
+    AMyGameMode* GameMode;
+
 
     void MoveUp(float DeltaTime);
     void MoveDown(float DeltaTime);
@@ -46,9 +51,16 @@ public:
 
     float MovementSpeed;
 
+    UPROPERTY(EditAnywhere, Category = "Fluid")
     bool bMovingUp;
+
+    UPROPERTY(EditAnywhere, Category = "Fluid")
     bool bStopMoving;
 
     void SetStopMoving(bool NewMovingState);
+
+    void CheckForFountainSpawn();
+
+    void SetGameMode(AMyGameMode* InputGameMode);
 
 };

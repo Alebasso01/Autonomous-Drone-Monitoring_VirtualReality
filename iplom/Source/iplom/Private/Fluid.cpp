@@ -2,6 +2,7 @@
 
 
 #include "Fluid.h"
+#include "MyGameMode.h"
 
 // Sets default values
 AFluid::AFluid()
@@ -16,6 +17,8 @@ AFluid::AFluid()
     MovementRange = 400.0f;
     bMovingUp = true;
     bStopMoving = false;
+    
+    GameMode = nullptr;
 }
 
 // Called when the game starts or when spawned
@@ -41,59 +44,80 @@ void AFluid::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-    if (!bStopMoving)
-    {
-        if (bMovingUp)
-            MoveUp(DeltaTime);
-        else
-            MoveDown(DeltaTime);
-    }
-
+    if (bMovingUp)
+         MoveUp(DeltaTime);
+    else
+         MoveDown(DeltaTime);
+    CheckForFountainSpawn();
 }
-
 
 
 // Move the fluid up
 void AFluid::MoveUp(float DeltaTime)
 {
-    FVector CurrentPosition = GetActorLocation();
-    FVector TargetPosition = EndPositionUp;
-
-    // If the actor reaches or exceeds the end position, change direction
-    if (CurrentPosition.Z >= EndPositionUp.Z)
+    if (!bStopMoving)
     {
-        bMovingUp = false;
+        FVector CurrentPosition = GetActorLocation();
+        FVector TargetPosition = EndPositionUp;
+
+        // If the actor reaches or exceeds the end position, change direction
+        if (CurrentPosition.Z >= EndPositionUp.Z)
+        {
+            bMovingUp = false;
+        }
+
+        // Interpolate towards the target position for smooth movement
+        FVector NewPosition = FMath::VInterpConstantTo(CurrentPosition, TargetPosition, DeltaTime, MovementSpeed);
+
+        // Set the new position
+        SetActorLocation(NewPosition);
     }
-
-    // Interpolate towards the target position for smooth movement
-    FVector NewPosition = FMath::VInterpConstantTo(CurrentPosition, TargetPosition, DeltaTime, MovementSpeed);
-
-    // Set the new position
-    SetActorLocation(NewPosition);
 
 }
 
 // Move the fluid down
 void AFluid::MoveDown(float DeltaTime)
 {
-    FVector CurrentPosition = GetActorLocation();
-    FVector TargetPosition = EndPositionDown;
-
-    // If the actor reaches or falls below the end position, change direction
-    if (CurrentPosition.Z <= EndPositionDown.Z)
+    if (!bStopMoving)
     {
-        bMovingUp = true;
+        FVector CurrentPosition = GetActorLocation();
+        FVector TargetPosition = EndPositionDown;
+
+        // If the actor reaches or falls below the end position, change direction
+        if (CurrentPosition.Z <= EndPositionDown.Z)
+        {
+            bMovingUp = true;
+        }
+
+        // Interpolate towards the target position for smooth movement
+        FVector NewPosition = FMath::VInterpConstantTo(CurrentPosition, TargetPosition, DeltaTime, MovementSpeed);
+
+        // Set the new position
+        SetActorLocation(NewPosition);
     }
-
-    // Interpolate towards the target position for smooth movement
-    FVector NewPosition = FMath::VInterpConstantTo(CurrentPosition, TargetPosition, DeltaTime, MovementSpeed);
-
-    // Set the new position
-    SetActorLocation(NewPosition);
 
 }
 
 void AFluid::SetStopMoving(bool NewMovingState)
 {
     bStopMoving = NewMovingState;
+}
+
+void AFluid::CheckForFountainSpawn()
+{
+    if (bStopMoving == false)
+    {
+
+        FVector CurrentPosition = GetActorLocation();
+        float Tolerance = 2.0f;
+
+        if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) <= Tolerance)
+            GameMode->UpdateFountainVisibility();
+
+    }
+}
+
+void AFluid::SetGameMode(AMyGameMode* InputGameMode)
+{
+    this->GameMode = InputGameMode;
 }

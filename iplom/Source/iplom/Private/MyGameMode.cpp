@@ -29,14 +29,17 @@ void AMyGameMode::BeginPlay()
     MyRoof = Cast<ARooftop>(GetWorld()->SpawnActor<ARooftop>(RooftopClass, SpawnPosition + FVector(0.0f, 0.0f, 500.0f), Rotation));
     MyFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, SpawnPosition + FVector(0.0f, 0.0f, 500.0f), Rotation));
 
-    MyFountain->SetActorHiddenInGame(true); // Initially hidden
+    MyFountain->SetActorHiddenInGame(true);
 
+    MyFluid->SetGameMode(this);
 
 
     if (MyFluid)
     {
-        GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMyGameMode::MoveFluid, 0.02f, true);
+        //GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMyGameMode::MoveFluid, 0.02f, true);
         MyRoof->FluidReference = MyFluid;
+        MoveFluid();
+
 
     }
 
@@ -61,7 +64,7 @@ void AMyGameMode::MoveFluid()
         // Update roof
         MyRoof->UpdateRotation(DeltaTime, MyFluid->bMovingUp);
 
-        UpdateFountainVisibility();
+        // UpdateFountainVisibility();
     }
 }
 
@@ -70,49 +73,25 @@ void AMyGameMode::UpdateFountainVisibility()
     if (MyFluid && MyFountain)
     {
 
-        FVector CurrentPosition = MyFluid->GetActorLocation();
-        float Tolerance = 20.0f; 
+        // FVector CurrentPosition = MyFluid->GetActorLocation();
+        // float Tolerance = 20.0f; 
 
-        if (FMath::Abs(CurrentPosition.Z - MyFluid->EndPositionUp.Z) <= Tolerance)
+        // if (FMath::Abs(CurrentPosition.Z - MyFluid->EndPositionUp.Z) <= Tolerance)
+        if (MyFountain->IsHidden())
         {
             MyFountain->SetActorHiddenInGame(false); 
             MyFluid->SetStopMoving(true);
+            GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMyGameMode::UpdateFountainVisibility, 5.0f, true);
         }
         else
         {
             MyFountain->SetActorHiddenInGame(true); 
+            MyFluid->SetStopMoving(false);
 
         }
     }
 }
 
 
-/*void AMyGameMode::SpawnFountain()
-{
-    
-    FVector SpawnPosition = FVector(0.0f, 0.0f, 1000.0f);
-    FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
 
-    MyFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, SpawnPosition, Rotation));
 
-    if (MyFountain)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Fountain spawned successfully!"));
-        bFountainSpawned = true;
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Failed to spawn the fountain."));
-    }
-}*/
-
-/*bool AMyGameMode::ShouldSpawnFountain()
-{
-    if (MyFluid)
-    {
-        FVector CurrentPosition = MyFluid->GetActorLocation();
-        return FMath::IsNearlyEqual(CurrentPosition.Z, MyFluid->EndPositionUp.Z, 10.0f);
-    }
-
-    return false;
-}*/

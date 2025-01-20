@@ -35,7 +35,8 @@ void ARooftop::BeginPlay()
 void ARooftop::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+    if(FluidReference)
+        UpdateRotation(GetWorld()->GetDeltaSeconds(), FluidReference->bMovingUp);
 }
 
 void ARooftop::UpdateRotation(float DeltaTime, bool bFluidMovingUp)

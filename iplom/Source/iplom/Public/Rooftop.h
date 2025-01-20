@@ -43,6 +43,7 @@ public:
 	AFluid* FluidReference;
 
 
+
 	FVector OriginPosition;
 	FVector EndPositionUp;
 	FVector EndPositionDown;
