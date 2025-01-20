@@ -5,6 +5,8 @@ AMyGameMode::AMyGameMode()
     MyFluid = nullptr;
     MyTank = nullptr;
     MyFountain = nullptr;
+    MyRoof = nullptr;
+
 }
 
 AMyGameMode::~AMyGameMode()
@@ -19,32 +21,40 @@ void AMyGameMode::BeginPlay()
     FVector SpawnPosition = FVector(0.0f, 0.0f, 0.0f);
     FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
 
-    // Spawn the fluid actor
-    MyFluid = Cast<AFluid>(GetWorld()->SpawnActor<AFluid>(FluidClass, SpawnPosition + FVector(0.0f, 0.0f, 900.0f), Rotation));
+    // Spawn the actors
+    MyFluid = Cast<AFluid>(GetWorld()->SpawnActor<AFluid>(FluidClass, SpawnPosition + FVector(0.0f, 0.0f, 500.0f), Rotation));
     MyTank = Cast<ATank>(GetWorld()->SpawnActor<ATank>(TankClass, SpawnPosition, Rotation));
-    MyFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, SpawnPosition + FVector(0.0f, 0.0f, 900.0f), Rotation));
+    MyFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, SpawnPosition + FVector(0.0f, 0.0f, 500.0f), Rotation));
+    MyRoof = Cast<ARooftop>(GetWorld()->SpawnActor<ARooftop>(RooftopClass, SpawnPosition + FVector(0.0f, 0.0f, 500.0f), Rotation));
+
 
     if (MyFluid)
     {
-        // No need to initialize movement here, since MovementSpeed is now global
-        // Set the fluid movement to be updated every frame
         GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMyGameMode::MoveFluid, 0.02f, true);
+        MyRoof->FluidReference = MyFluid;
+
     }
 }
 
 void AMyGameMode::MoveFluid()
 {
-    if (MyFluid)
+    if (MyFluid && MyRoof)
     {
-        // Call MoveUp or MoveDown based on bMovingUp flag
+        float DeltaTime = GetWorld()->GetDeltaSeconds();
+
+        // Handle fluid movement
         if (MyFluid->bMovingUp)
         {
-            MyFluid->MoveUp(GetWorld()->GetDeltaSeconds());
+            MyFluid->MoveUp(DeltaTime);
         }
         else
         {
-            MyFluid->MoveDown(GetWorld()->GetDeltaSeconds());
+            MyFluid->MoveDown(DeltaTime);
         }
+
+        // Update roof
+        MyRoof->UpdateRotation(DeltaTime, MyFluid->bMovingUp);
     }
+
 }
 

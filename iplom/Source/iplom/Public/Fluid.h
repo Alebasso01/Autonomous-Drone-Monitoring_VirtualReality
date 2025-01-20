@@ -25,19 +25,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-    // Fluid properties
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fluid")
-    float FluidHeight;  // Current height of the fluid
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fluid")
-    float FluidFillRate;  // Rate at which the fluid fills up (height per second)
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fluid")
-    float FluidConsumptionRate;  // Rate at which the fluid is consumed (height per second)
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fluid")
-    float MaxFluidHeight;  // Maximum possible fluid height
-
     // Niagara system reference
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fluid")
     UNiagaraSystem* NiagaraSystem;
@@ -46,23 +33,21 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
     UNiagaraComponent* NiagaraComponent;
 
+    UPROPERTY(EditAnywhere, Category = "Fluid")
+    float MovementRange;
 
-    // Function to handle the movement logic
-    // Move the actor up and down based on movement direction
+
     void MoveUp(float DeltaTime);
     void MoveDown(float DeltaTime);
 
-    // Target positions for up and down movement
     FVector OriginPosition;
     FVector EndPositionUp;
     FVector EndPositionDown;
 
-    // Boolean to track the current direction (up or down)
-    float MovementRange;
     float MovementSpeed;
+
     bool bMovingUp;
-    // Update the Niagara World Grid Extent (Z-axis height) based on FluidHeight
-    void UpdateNiagaraGridExtent(float DeltaTime);
+
 
     
 

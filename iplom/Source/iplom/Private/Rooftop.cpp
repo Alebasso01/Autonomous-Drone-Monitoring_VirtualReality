@@ -9,12 +9,25 @@ ARooftop::ARooftop()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+    MaxRotation = 30.0f;
+    OriginalRotation = 0.0f;
+    RotationSpeed = 30.0f;
+    MovementSpeed = 100.0f;  
+    MovementRange = 400.0f;
+    FluidReference = nullptr;
+
 }
 
 // Called when the game starts or when spawned
 void ARooftop::BeginPlay()
 {
 	Super::BeginPlay();
+
+    OriginPosition = GetActorLocation();
+
+    // movement endpoints
+    EndPositionUp = OriginPosition + FVector(0, 0, MovementRange);
+    EndPositionDown = OriginPosition - FVector(0, 0, MovementRange);
 	
 }
 
@@ -25,3 +38,43 @@ void ARooftop::Tick(float DeltaTime)
 
 }
 
+void ARooftop::UpdateRotation(float DeltaTime, bool bFluidMovingUp)
+{
+    // Get current position and rotation
+    FVector CurrentPosition = GetActorLocation();
+    FRotator CurrentRotation = GetActorRotation();
+
+    // Get fluid's position
+    FVector FluidPosition = FluidReference->GetActorLocation();
+
+    FVector NewPosition = GetActorLocation();
+    NewPosition.Z = FluidPosition.Z + 50.0f;  // Offset to keep roof above fluid
+
+    // Calculate target rotation based on movement direction
+    float TargetRotation;
+
+    if (bFluidMovingUp)
+    {
+        // When moving up, interpolate towards MaxRotation
+        TargetRotation = FMath::FInterpConstantTo(
+            CurrentRotation.Pitch,  // Current rotation
+            MaxRotation,           
+            DeltaTime,
+            RotationSpeed
+        );
+    }
+    else
+    {
+        // When moving down, interpolate towards 0
+        TargetRotation = FMath::FInterpConstantTo(
+            CurrentRotation.Pitch,  // Current rotation
+            OriginalRotation,                  
+            DeltaTime,
+            RotationSpeed
+        );
+    }
+
+    // Set new position and rotation
+    SetActorLocation(NewPosition);
+    SetActorRotation(FRotator(TargetRotation, 0.0f, 0.0f));
+}

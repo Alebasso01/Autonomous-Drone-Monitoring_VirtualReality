@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Fluid.h"
 #include "Rooftop.generated.h"
 
 UCLASS()
@@ -23,4 +24,31 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere, Category = "Rooftop Movement")
+	float MaxRotation;
+
+	UPROPERTY(EditAnywhere, Category = "Rooftop Movement")
+	float OriginalRotation;
+
+	UPROPERTY(EditAnywhere, Category = "Rooftop Movement")
+	float RotationSpeed;
+
+	UPROPERTY(EditAnywhere, Category = "Rooftop Movement")
+	float MovementSpeed;
+
+	UPROPERTY(EditAnywhere, Category = "Rooftop Movement")
+	float MovementRange;
+
+	UPROPERTY(EditAnywhere, Category = "Rooftop Movement")
+	AFluid* FluidReference;
+
+
+	FVector OriginPosition;
+	FVector EndPositionUp;
+	FVector EndPositionDown;
+
+	void UpdateRotation(float DeltaTime, bool bFluidMovingUp);
+
+
 };
+

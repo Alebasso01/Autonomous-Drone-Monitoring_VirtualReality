@@ -6,6 +6,7 @@
 #include "Fluid.h"
 #include "Tank.h"
 #include "Fountain.h"
+#include "Rooftop.h"
 #include "GameFramework/GameMode.h"
 #include "MyGameMode.generated.h"
 
@@ -23,13 +24,14 @@ class IPLOM_API AMyGameMode : public AGameMode
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AFluid> FluidClass;
 
-	// TSubclassOf is a template class that provides UClass type safety.
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<ATank> TankClass;
 
-	// TSubclassOf is a template class that provides UClass type safety.
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AFountain> FountainClass;
+
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<ARooftop> RooftopClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
 		AFluid* MyFluid;
@@ -39,6 +41,9 @@ class IPLOM_API AMyGameMode : public AGameMode
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
 		AFountain* MyFountain;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
+		ARooftop* MyRoof;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
 		FTimerHandle Timer;
