@@ -9,9 +9,9 @@ ARooftop::ARooftop()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-    MaxRotation = 30.0f;
-    OriginalRotation = 0.0f;
-    RotationSpeed = 5.0f;
+    MaxRotation = 20.0f;
+    OriginalRotation = 15.0f;
+    RotationSpeed = 3.0f;
     MovementSpeed = 30.0f;  
     FluidReference = nullptr;
 
@@ -44,11 +44,14 @@ void ARooftop::UpdateRotation(float DeltaTime, bool bFluidMovingUp)
     FVector CurrentPosition = GetActorLocation();
     FRotator CurrentRotation = GetActorRotation();
 
+    PivotOffset = FVector(-500.0f, 0.0f, 0.0f); // Offset in X direction, adjust as needed
+    FVector PivotPoint = CurrentPosition + PivotOffset;
+
     // Get fluid's position
     FVector FluidPosition = FluidReference->GetActorLocation();
 
-    FVector NewPosition = GetActorLocation();
-    NewPosition.Z = FluidPosition.Z + 50.0f;  // Offset to keep roof above fluid
+    //FVector NewPosition = GetActorLocation();
+    //NewPosition.Z = FluidPosition.Z + 50.0f;  // Offset to keep roof above fluid
 
     // Calculate target rotation based on movement direction
     float TargetRotation;
@@ -73,6 +76,15 @@ void ARooftop::UpdateRotation(float DeltaTime, bool bFluidMovingUp)
             RotationSpeed
         );
     }
+
+    FRotator DeltaRotation(TargetRotation - CurrentRotation.Pitch, 0.0f, 0.0f);
+    FVector NewPosition = PivotPoint + (CurrentPosition - PivotPoint).RotateAngleAxis(
+        DeltaRotation.Pitch,
+        FVector(0.0f, 1.0f, 0.0f)  // Rotate around Y axis since we're changing Pitch
+    );
+
+    NewPosition.Z = FluidPosition.Z + 50.0f;
+
 
     // Set new position and rotation
     SetActorLocation(NewPosition);

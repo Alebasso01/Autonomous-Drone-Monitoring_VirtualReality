@@ -48,6 +48,18 @@ class IPLOM_API AMyGameMode : public AGameMode
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Timer")
 		TArray<AFountain*> FountainArray;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Timer")
+		TArray<FVector> PositionArray;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Timer")
+		TArray<FVector> ScaleTankArray;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Timer")
+		TArray<FVector> ScaleFluidArray;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Timer")
+		TArray<FVector> FluidSizeArray;
+
 
 	AMyGameMode();
 

@@ -32,7 +32,7 @@ public:
     UNiagaraSystem* NiagaraSystem;
 
     // Niagara component to apply the fluid's behavior
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fluid")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Fluid")
     UNiagaraComponent* NiagaraComponent;
 
     UPROPERTY(EditAnywhere, Category = "Fluid")
@@ -69,5 +69,6 @@ public:
 
     void MoveUp(float DeltaTime);
     void MoveDown(float DeltaTime);
+    void UpdateNiagaraGridExtent(FVector GridExtent);
 
 };

@@ -130,3 +130,14 @@ void AFluid::SetGameMode(AMyGameMode* InputGameMode)
 {
     this->GameMode = InputGameMode;
 }
+
+void AFluid::UpdateNiagaraGridExtent(FVector GridExtent)
+{
+    USceneComponent* child = NiagaraComponent->GetChildComponent(0);
+    UNiagaraComponent* newChild = Cast<UNiagaraComponent>(child);
+    newChild->SetNiagaraVariableVec2(FString("WorldGridSize"), FVector2D(GridExtent.X, GridExtent.Y));
+
+    NiagaraComponent->SetNiagaraVariableVec2(FString("WorldGridSize"), FVector2D(GridExtent.X, GridExtent.Y));
+        
+    
+}
