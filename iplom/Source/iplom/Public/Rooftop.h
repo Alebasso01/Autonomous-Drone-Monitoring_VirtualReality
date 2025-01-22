@@ -45,7 +45,7 @@ public:
 	FVector EndPositionUp;
 	FVector EndPositionDown;
 
-	void UpdateRotation(float DeltaTime, bool bFluidMovingUp);
+	void MoveAndRotate(bool bFluidMovingUp);
 
 
 };

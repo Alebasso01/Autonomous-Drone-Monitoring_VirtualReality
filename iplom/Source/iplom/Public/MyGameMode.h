@@ -60,6 +60,11 @@ class IPLOM_API AMyGameMode : public AGameMode
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Timer")
 		TArray<FVector> FluidSizeArray;
 
+	// Easy to access property in Editor to select how many tanks to spawn
+	// Select a number less than 5 if your PC doesn't handle fluently the complete facility
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Timer")
+		int32 NumberOfTanks;
+
 
 	AMyGameMode();
 

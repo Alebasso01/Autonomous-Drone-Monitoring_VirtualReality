@@ -31,8 +31,8 @@ void AFluid::BeginPlay()
     OriginPosition = GetActorLocation();
 
     // Calculate the end positions for up and down movement
-    EndPositionUp = OriginPosition + FVector(0, 0, 100);
-    EndPositionDown = OriginPosition - FVector(0, 0, 200);
+    EndPositionUp = OriginPosition + FVector(0, 0, 300);
+    EndPositionDown = OriginPosition - FVector(0, 0, 0);
 
     // Set initial direction
     bMovingUp = true;
@@ -115,7 +115,7 @@ void AFluid::CheckForFountainSpawn()
         if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) <= Tolerance && !bLeacking)
         {
             RandomID = FMath::RandRange(1, 10);
-            if (RandomID == 5)
+            if (RandomID == 15) // Change back to a valid number to activate the fountain spawn
             {
                 bLeacking = true;
                 GameMode->UpdateFountainVisibility(this);
