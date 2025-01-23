@@ -115,10 +115,11 @@ void AFluid::CheckForFountainSpawn()
         if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) <= Tolerance && !bLeacking)
         {
             RandomID = FMath::RandRange(1, 10);
-            if (RandomID == 15) // Change back to a valid number to activate the fountain spawn
+            if (RandomID == 5) 
             {
                 bLeacking = true;
                 GameMode->UpdateFountainVisibility(this);
+                GetWorld()->GetTimerManager().SetTimer(LeakageTimer, this, &AFluid::StopLeakage, 5.0f, false);
             }
         }
         else if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) > Tolerance && bLeacking)
@@ -131,13 +132,17 @@ void AFluid::SetGameMode(AMyGameMode* InputGameMode)
     this->GameMode = InputGameMode;
 }
 
+
 void AFluid::UpdateNiagaraGridExtent(FVector GridExtent)
 {
     USceneComponent* child = NiagaraComponent->GetChildComponent(0);
     UNiagaraComponent* newChild = Cast<UNiagaraComponent>(child);
     newChild->SetNiagaraVariableVec2(FString("WorldGridSize"), FVector2D(GridExtent.X, GridExtent.Y));
 
-    NiagaraComponent->SetNiagaraVariableVec2(FString("WorldGridSize"), FVector2D(GridExtent.X, GridExtent.Y));
-        
-    
+    NiagaraComponent->SetNiagaraVariableVec2(FString("WorldGridSize"), FVector2D(GridExtent.X, GridExtent.Y));  
+}
+
+void AFluid::StopLeakage()
+{
+    GameMode->UpdateFountainVisibility(this);
 }

@@ -15,6 +15,8 @@ ARooftop::ARooftop()
     MovementSpeed = 100.0f;  
     FluidReference = nullptr;
 
+    ScaleRoof = 1.0f;
+
 }
 
 // Called when the game starts or when spawned
@@ -34,7 +36,7 @@ void ARooftop::BeginPlay()
 void ARooftop::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-    if(FluidReference)
+    if(FluidReference->bStopMoving == false)
         MoveAndRotate(FluidReference->bMovingUp);
 }
 
@@ -99,7 +101,7 @@ void ARooftop::MoveAndRotate(bool bFluidMovingUp)
     // Get fluid's position
     FVector FluidPosition = FluidReference->GetActorLocation();
     float RooftopHeightOffset = 50.0f;
-    float RooftopBaseOffset = -1500.0f; // to be adjusted, and why this number? Also in MyGameMode.cpp, line 70
+    float RooftopBaseOffset = -500.0f; // to be adjusted, and why this number? Also in MyGameMode.cpp, line 70
 
     // Next rotation
     // FRotator TargetRotation = bFluidMovingUp ? FRotator(0.0f, OriginalRotation, 0.0f) : FRotator(0.0f, MaxRotation, 0.0f);
@@ -124,13 +126,18 @@ void ARooftop::MoveAndRotate(bool bFluidMovingUp)
 
     FVector TargetPosition;
     if(bFluidMovingUp)
-        TargetPosition = FluidReference->EndPositionUp + FVector(RooftopBaseOffset, 0.0f, RooftopHeightOffset);
+        TargetPosition = FluidReference->EndPositionUp + FVector(RooftopBaseOffset * ScaleRoof, 0.0f, RooftopHeightOffset);
     else
-        TargetPosition = FluidReference->EndPositionDown + FVector(RooftopBaseOffset, 0.0f, RooftopHeightOffset);
+        TargetPosition = FluidReference->EndPositionDown + FVector(RooftopBaseOffset * ScaleRoof, 0.0f, RooftopHeightOffset);
     FVector NewPosition = FMath::VInterpConstantTo(CurrentPosition, TargetPosition, GetWorld()->GetDeltaSeconds(), MovementSpeed);
 
 
     // Set new position and rotation
     SetActorLocation(NewPosition);
     SetActorRotation(NewRotation);
+}
+
+void ARooftop::SetScaleRoof(float scale)
+{
+    ScaleRoof = scale;
 }

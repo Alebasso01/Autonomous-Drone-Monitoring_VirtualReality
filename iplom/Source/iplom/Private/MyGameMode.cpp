@@ -63,12 +63,12 @@ void AMyGameMode::BeginPlay()
 
     NumberOfTanks = FMath::Clamp(NumberOfTanks, 0, 5);
 
+    FVector Increment = FVector(0.0f, 0.0f, 800.0f);
+    FVector FountainIncrement = Increment + FVector(0.0f, 0.0f, 500.0f);
+    FVector RooftopBaseOffset = FVector(-500.0f, 0.0f, 0.0f);
+
     for(int i=0; i<NumberOfTanks; i++)
     {
-        FVector Increment = FVector(0.0f, 0.0f, 800.0f);
-        FVector FountainIncrement = Increment + FVector(0.0f, 0.0f, 500.0f);
-        FVector RooftopBaseOffset = FVector(-1500.0f, 0.0f, 0.0f);
-
         SpawnedTank = Cast<ATank>(GetWorld()->SpawnActor<ATank>(TankClass, PositionArray[i], Rotation));
         SpawnedTank->SetActorScale3D(ScaleTankArray[i]);
         TankArray.Add(SpawnedTank);
@@ -78,11 +78,12 @@ void AMyGameMode::BeginPlay()
         FluidArray.Add(SpawnedFluid);
         SpawnedFluid->SetGameMode(this);
 
-        SpawnedRoof = Cast<ARooftop>(GetWorld()->SpawnActor<ARooftop>(RooftopClass, PositionArray[i] + Increment + RooftopBaseOffset, Rotation));
-        //SpawnedRoof->SetActorScale3D(ScaleTankArray[i] * 1.18);
-        SpawnedRoof->SetActorScale3D(ScaleTankArray[i]);
+        SpawnedRoof = Cast<ARooftop>(GetWorld()->SpawnActor<ARooftop>(RooftopClass, PositionArray[i] + Increment + RooftopBaseOffset * ScaleTankArray[i].X, Rotation));
+        SpawnedRoof->SetActorScale3D(ScaleTankArray[i] * 1.185);
+        //SpawnedRoof->SetActorScale3D(ScaleTankArray[i]);
         RoofArray.Add(SpawnedRoof);
         SpawnedRoof->FluidReference = SpawnedFluid;
+        SpawnedRoof->SetScaleRoof(ScaleTankArray[i].X * 1.185);
 
         SpawnedFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, PositionArray[i] + FountainIncrement, Rotation));
         FountainArray.Add(SpawnedFountain);
@@ -120,7 +121,7 @@ void AMyGameMode::UpdateFountainVisibility(AFluid* Fluid)
     {
         FountainArray[i]->SetActorHiddenInGame(false);
         Fluid->SetStopMoving(true);
-
+        /*
         GetWorld()->GetTimerManager().SetTimer(
             Timer,
             [this, Fluid]() {
@@ -129,6 +130,7 @@ void AMyGameMode::UpdateFountainVisibility(AFluid* Fluid)
             5.0f,
             false
         );
+        */
     }
     else
     {

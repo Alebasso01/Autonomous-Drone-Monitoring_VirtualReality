@@ -59,6 +59,9 @@ public:
     UPROPERTY(EditAnywhere, Category = "Fluid")
     int32 RandomID;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Timer")
+    FTimerHandle LeakageTimer;
+
     float MovementSpeed;
 
     void SetStopMoving(bool NewMovingState);
@@ -70,5 +73,7 @@ public:
     void MoveUp(float DeltaTime);
     void MoveDown(float DeltaTime);
     void UpdateNiagaraGridExtent(FVector GridExtent);
+
+    void StopLeakage();
 
 };

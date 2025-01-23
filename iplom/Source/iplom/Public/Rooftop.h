@@ -40,12 +40,16 @@ public:
 	AFluid* FluidReference;
 
 
+	UPROPERTY(EditAnywhere, Category = "Rooftop Movement")
+	float ScaleRoof;
 
 	FVector OriginPosition;
 	FVector EndPositionUp;
 	FVector EndPositionDown;
 
 	void MoveAndRotate(bool bFluidMovingUp);
+
+	void SetScaleRoof(float scale);
 
 
 };
