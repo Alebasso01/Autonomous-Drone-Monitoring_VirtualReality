@@ -9,9 +9,9 @@ ARooftop::ARooftop()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-    MaxRotation = 30.0f;
+    MaxRotation = 10.0f;
     OriginalRotation = 0.0f;
-    RotationSpeed = 10.0f;
+    RotationSpeed = 3.0f;
     MovementSpeed = 100.0f;  
     FluidReference = nullptr;
 
@@ -25,10 +25,6 @@ void ARooftop::BeginPlay()
 	Super::BeginPlay();
 
     OriginPosition = GetActorLocation();
-
-    // movement endpoints
-    EndPositionUp = OriginPosition + FVector(0, 0, 100);
-    EndPositionDown = OriginPosition - FVector(0, 0, 200);
 	
 }
 

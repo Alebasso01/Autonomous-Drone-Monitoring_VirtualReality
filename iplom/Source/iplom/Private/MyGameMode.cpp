@@ -64,8 +64,11 @@ void AMyGameMode::BeginPlay()
     NumberOfTanks = FMath::Clamp(NumberOfTanks, 0, 5);
 
     FVector Increment = FVector(0.0f, 0.0f, 800.0f);
-    FVector FountainIncrement = Increment + FVector(0.0f, 0.0f, 500.0f);
+    FVector FountainIncrement = Increment + FVector(1200.0f, 0.0f, 300.0f);
     FVector RooftopBaseOffset = FVector(-500.0f, 0.0f, 0.0f);
+    FVector RoofHeighOffset = FVector(0.0f, 0.0f, 50.0f);
+
+    FVector RoofSpawnPosition;
 
     for(int i=0; i<NumberOfTanks; i++)
     {
@@ -78,7 +81,9 @@ void AMyGameMode::BeginPlay()
         FluidArray.Add(SpawnedFluid);
         SpawnedFluid->SetGameMode(this);
 
-        SpawnedRoof = Cast<ARooftop>(GetWorld()->SpawnActor<ARooftop>(RooftopClass, PositionArray[i] + Increment + RooftopBaseOffset * ScaleTankArray[i].X, Rotation));
+        RoofSpawnPosition = PositionArray[i] + Increment + RooftopBaseOffset * ScaleTankArray[i].X * 1.185 + RoofHeighOffset;
+
+        SpawnedRoof = Cast<ARooftop>(GetWorld()->SpawnActor<ARooftop>(RooftopClass, RoofSpawnPosition, Rotation));
         SpawnedRoof->SetActorScale3D(ScaleTankArray[i] * 1.185);
         //SpawnedRoof->SetActorScale3D(ScaleTankArray[i]);
         RoofArray.Add(SpawnedRoof);

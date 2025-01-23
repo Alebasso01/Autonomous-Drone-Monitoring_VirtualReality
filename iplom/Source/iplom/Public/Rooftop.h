@@ -44,8 +44,6 @@ public:
 	float ScaleRoof;
 
 	FVector OriginPosition;
-	FVector EndPositionUp;
-	FVector EndPositionDown;
 
 	void MoveAndRotate(bool bFluidMovingUp);
 
