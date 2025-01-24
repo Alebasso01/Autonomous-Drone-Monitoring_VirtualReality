@@ -65,15 +65,13 @@ public:
     float MovementSpeed;
 
     void SetStopMoving(bool NewMovingState);
-
     void CheckForFountainSpawn();
-
     void SetGameMode(AMyGameMode* InputGameMode);
-
     void MoveUp(float DeltaTime);
     void MoveDown(float DeltaTime);
     void UpdateNiagaraGridExtent(FVector GridExtent);
-
     void StopLeakage();
+    void SetMovementSpeed(float speed);
+    
 
 };

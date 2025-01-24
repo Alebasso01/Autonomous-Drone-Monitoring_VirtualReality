@@ -12,9 +12,8 @@ ARooftop::ARooftop()
     MaxRotation = 10.0f;
     OriginalRotation = 0.0f;
     RotationSpeed = 3.0f;
-    MovementSpeed = 100.0f;  
+    MovementSpeed = 0.0f;  
     FluidReference = nullptr;
-
     ScaleRoof = 1.0f;
 
 }
@@ -38,57 +37,6 @@ void ARooftop::Tick(float DeltaTime)
 
 void ARooftop::MoveAndRotate(bool bFluidMovingUp)
 {
-    /*
-    // Get current position and rotation
-    FVector CurrentPosition = GetActorLocation();
-    FRotator CurrentRotation = GetActorRotation();
-
-    PivotOffset = FVector(-500.0f, 0.0f, 0.0f); // Offset in X direction, adjust as needed
-    FVector PivotPoint = CurrentPosition + PivotOffset;
-
-    // Get fluid's position
-    FVector FluidPosition = FluidReference->GetActorLocation();
-
-    //FVector NewPosition = GetActorLocation();
-    //NewPosition.Z = FluidPosition.Z + 50.0f;  // Offset to keep roof above fluid
-
-    // Calculate target rotation based on movement direction
-    float TargetRotation;
-
-    if (bFluidMovingUp)
-    {
-        // When moving up, interpolate towards MaxRotation
-        TargetRotation = FMath::FInterpConstantTo(
-            CurrentRotation.Pitch,  // Current rotation
-            MaxRotation,
-            GetWorld()->GetDeltaSeconds(),
-            RotationSpeed
-        );
-    }
-    else
-    {
-        // When moving down, interpolate towards 0
-        TargetRotation = FMath::FInterpConstantTo(
-            CurrentRotation.Pitch,  // Current rotation
-            OriginalRotation,
-            GetWorld()->GetDeltaSeconds(),
-            RotationSpeed
-        );
-    }
-
-    FRotator DeltaRotation(TargetRotation - CurrentRotation.Pitch, 0.0f, 0.0f);
-    FVector NewPosition = PivotPoint + (CurrentPosition - PivotPoint).RotateAngleAxis(
-        DeltaRotation.Pitch,
-        FVector(0.0f, 1.0f, 0.0f)  // Rotate around Y axis since we're changing Pitch
-    );
-
-    NewPosition.Z = FluidPosition.Z + 50.0f;
-
-
-    // Set new position and rotation
-    SetActorLocation(NewPosition);
-    SetActorRotation(FRotator(TargetRotation, 0.0f, 0.0f));
-    */
 
     // Get current position and rotation
     FVector CurrentPosition = GetActorLocation();
@@ -110,23 +58,12 @@ void ARooftop::MoveAndRotate(bool bFluidMovingUp)
 
 
     // Next location
-    
-    /*
-    // Rooftop radius = 5 m -> 500 cm = 500 Unreal Engine units
-    float NewHeight = 500.0f * FMath::Sin(TargetRotation.Pitch);
-    float NewBasePositioning = 500.0f * FMath::Cos(TargetRotation.Pitch);
-    FVector TargetPosition = FluidPosition + FVector(NewBasePositioning - 500.0f, 0.0f, NewHeight + RooftopHeightOffset);
-    float ipotenusa = FMath::Sqrt(NewHeight * NewHeight + (NewBasePositioning - 500.0f) * (NewBasePositioning - 500.0f));
-    MovementSpeed = 100.0f * ipotenusa / NewHeight;
-    */
-
     FVector TargetPosition;
     if(bFluidMovingUp)
         TargetPosition = FluidReference->EndPositionUp + FVector(RooftopBaseOffset * ScaleRoof, 0.0f, RooftopHeightOffset);
     else
         TargetPosition = FluidReference->EndPositionDown + FVector(RooftopBaseOffset * ScaleRoof, 0.0f, RooftopHeightOffset);
     FVector NewPosition = FMath::VInterpConstantTo(CurrentPosition, TargetPosition, GetWorld()->GetDeltaSeconds(), MovementSpeed);
-
 
     // Set new position and rotation
     SetActorLocation(NewPosition);
@@ -136,4 +73,9 @@ void ARooftop::MoveAndRotate(bool bFluidMovingUp)
 void ARooftop::SetScaleRoof(float scale)
 {
     ScaleRoof = scale;
+}
+
+void ARooftop::SetMovementSpeed(float speed)
+{
+    MovementSpeed = speed;
 }

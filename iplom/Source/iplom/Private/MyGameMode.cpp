@@ -20,9 +20,9 @@ void AMyGameMode::BeginPlay()
     FRotator RotationRoof = FRotator(0.0f, 0.0f, 30.0f);
 
 
-    FVector SpawnPositionTank1 = FVector(9050.0f, -23930.0f, -185480.0f);
-    FVector SpawnPositionTank2 = FVector(8600.0f, -30300.0f, -185480.0f);
-    FVector SpawnPositionTank3 = FVector(8900.0f, -35740.0f, -185500.0f);
+    FVector SpawnPositionTank1 = FVector(9050.0f, -23730.0f, -185480.0f);
+    FVector SpawnPositionTank2 = FVector(8770.0f, -29780.0f, -185480.0f);
+    FVector SpawnPositionTank3 = FVector(8980.0f, -35630.0f, -185450.0f);
     FVector SpawnPositionTank4 = FVector(8720.0f, -41370.0f, -185500.0f);
     FVector SpawnPositionTank5 = FVector(9110.0f, -46660.0f, -185500.0f);
 
@@ -69,6 +69,7 @@ void AMyGameMode::BeginPlay()
     FVector RoofHeighOffset = FVector(0.0f, 0.0f, 50.0f);
 
     FVector RoofSpawnPosition;
+    speed = 60.0f;
 
     for(int i=0; i<NumberOfTanks; i++)
     {
@@ -80,6 +81,8 @@ void AMyGameMode::BeginPlay()
         SpawnedFluid->UpdateNiagaraGridExtent(ScaleFluidArray[i]);
         FluidArray.Add(SpawnedFluid);
         SpawnedFluid->SetGameMode(this);
+        SpawnedFluid->SetMovementSpeed(speed);
+
 
         RoofSpawnPosition = PositionArray[i] + Increment + RooftopBaseOffset * ScaleTankArray[i].X * 1.185 + RoofHeighOffset;
 
@@ -89,6 +92,8 @@ void AMyGameMode::BeginPlay()
         RoofArray.Add(SpawnedRoof);
         SpawnedRoof->FluidReference = SpawnedFluid;
         SpawnedRoof->SetScaleRoof(ScaleTankArray[i].X * 1.185);
+        SpawnedRoof->SetMovementSpeed(speed);
+
 
         SpawnedFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, PositionArray[i] + FountainIncrement, Rotation));
         FountainArray.Add(SpawnedFountain);

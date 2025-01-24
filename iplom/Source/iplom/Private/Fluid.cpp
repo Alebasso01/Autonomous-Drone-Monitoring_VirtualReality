@@ -12,13 +12,11 @@ AFluid::AFluid()
 
     NiagaraSystem = nullptr;  
     NiagaraComponent = nullptr;  
-
-    MovementSpeed = 100.0f; 
+    MovementSpeed = 0.0f; 
     bMovingUp = true;
     bStopMoving = false;
     bLeacking = false;
     RandomID = 0;
-    
     GameMode = nullptr;
 }
 
@@ -114,8 +112,8 @@ void AFluid::CheckForFountainSpawn()
 
         if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) <= Tolerance && !bLeacking)
         {
-            RandomID = FMath::RandRange(1, 10);
-            if (RandomID == 5) 
+            RandomID = FMath::RandRange(1, 20);
+            if (RandomID == 3) 
             {
                 bLeacking = true;
                 GameMode->UpdateFountainVisibility(this);
@@ -132,7 +130,6 @@ void AFluid::SetGameMode(AMyGameMode* InputGameMode)
     this->GameMode = InputGameMode;
 }
 
-
 void AFluid::UpdateNiagaraGridExtent(FVector GridExtent)
 {
     USceneComponent* child = NiagaraComponent->GetChildComponent(0);
@@ -145,4 +142,9 @@ void AFluid::UpdateNiagaraGridExtent(FVector GridExtent)
 void AFluid::StopLeakage()
 {
     GameMode->UpdateFountainVisibility(this);
+}
+
+void AFluid::SetMovementSpeed(float speed)
+{
+    MovementSpeed = speed;
 }

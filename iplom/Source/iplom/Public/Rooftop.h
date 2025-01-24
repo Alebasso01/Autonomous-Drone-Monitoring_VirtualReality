@@ -46,9 +46,8 @@ public:
 	FVector OriginPosition;
 
 	void MoveAndRotate(bool bFluidMovingUp);
-
 	void SetScaleRoof(float scale);
-
+	void SetMovementSpeed(float speed);
 
 };
 
