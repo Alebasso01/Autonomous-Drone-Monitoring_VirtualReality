@@ -2,7 +2,7 @@
 
 
 #include "Fluid.h"
-#include "MyGameMode.h"
+#include "OilRefinery.h"
 
 // Sets default values
 AFluid::AFluid()
@@ -17,7 +17,7 @@ AFluid::AFluid()
     bStopMoving = false;
     bLeacking = false;
     RandomID = 0;
-    GameMode = nullptr;
+    OilRefinery = nullptr;
 }
 
 // Called when the game starts or when spawned
@@ -116,7 +116,7 @@ void AFluid::CheckForFountainSpawn()
             if (RandomID == 3) 
             {
                 bLeacking = true;
-                GameMode->UpdateFountainVisibility(this);
+                OilRefinery->UpdateFountainVisibility(this);
                 GetWorld()->GetTimerManager().SetTimer(LeakageTimer, this, &AFluid::StopLeakage, 5.0f, false);
             }
         }
@@ -125,10 +125,11 @@ void AFluid::CheckForFountainSpawn()
     }
 }
 
-void AFluid::SetGameMode(AMyGameMode* InputGameMode)
+void AFluid::SetOilRefinery(AOilRefinery* InputOilRefinery)
 {
-    this->GameMode = InputGameMode;
+    this->OilRefinery = InputOilRefinery;
 }
+
 
 void AFluid::UpdateNiagaraGridExtent(FVector GridExtent)
 {
@@ -141,7 +142,7 @@ void AFluid::UpdateNiagaraGridExtent(FVector GridExtent)
 
 void AFluid::StopLeakage()
 {
-    GameMode->UpdateFountainVisibility(this);
+    OilRefinery->UpdateFountainVisibility(this);
 }
 
 void AFluid::SetMovementSpeed(float speed)

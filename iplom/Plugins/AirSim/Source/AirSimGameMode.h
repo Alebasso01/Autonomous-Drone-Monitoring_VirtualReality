@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "OilRefinery.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/GameUserSettings.h"
 #include "AirSimGameMode.generated.h"
@@ -22,4 +23,12 @@ public:
 
     //private:
     //UGameUserSettings* GetGameUserSettings();
+
+    UPROPERTY(EditDefaultsOnly)
+    TSubclassOf<AOilRefinery> RefineryClass;
+
+    UPROPERTY(VisibleAnywhere)
+    AOilRefinery* SpawnedRefinery;
+
+
 };

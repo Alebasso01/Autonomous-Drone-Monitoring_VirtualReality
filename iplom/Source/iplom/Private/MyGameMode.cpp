@@ -80,8 +80,8 @@ void AMyGameMode::BeginPlay()
         SpawnedFluid = Cast<AFluid>(GetWorld()->SpawnActor<AFluid>(FluidClass, PositionArray[i] + Increment, Rotation));
         SpawnedFluid->UpdateNiagaraGridExtent(ScaleFluidArray[i]);
         FluidArray.Add(SpawnedFluid);
-        SpawnedFluid->SetGameMode(this);
-        SpawnedFluid->SetMovementSpeed(speed);
+        //SpawnedFluid->SetGameMode(this);
+        //SpawnedFluid->SetMovementSpeed(speed);
 
 
         RoofSpawnPosition = PositionArray[i] + Increment + RooftopBaseOffset * ScaleTankArray[i].X * 1.185 + RoofHeighOffset;

@@ -8,7 +8,7 @@
 #include "NiagaraSystem.h"
 #include "Fluid.generated.h"
 
-class AMyGameMode;
+class AOilRefinery;
 
 UCLASS()
 class IPLOM_API AFluid : public AActor
@@ -36,7 +36,7 @@ public:
     UNiagaraComponent* NiagaraComponent;
 
     UPROPERTY(EditAnywhere, Category = "Fluid")
-    AMyGameMode* GameMode;
+    AOilRefinery* OilRefinery;
 
     UPROPERTY(EditAnywhere, Category = "Fluid")
     bool bMovingUp;
@@ -66,7 +66,7 @@ public:
 
     void SetStopMoving(bool NewMovingState);
     void CheckForFountainSpawn();
-    void SetGameMode(AMyGameMode* InputGameMode);
+    void SetOilRefinery(AOilRefinery* InputOilRefinery);
     void MoveUp(float DeltaTime);
     void MoveDown(float DeltaTime);
     void UpdateNiagaraGridExtent(FVector GridExtent);

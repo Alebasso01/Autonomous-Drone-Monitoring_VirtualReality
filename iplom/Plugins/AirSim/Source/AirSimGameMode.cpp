@@ -67,6 +67,9 @@ void AAirSimGameMode::StartPlay()
 {
     Super::StartPlay();
 
+    SpawnedRefinery = Cast<AOilRefinery>(GetWorld()->SpawnActor<AOilRefinery>(RefineryClass, FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f)));
+
+
     //UGameUserSettings* game_settings = GetGameUserSettings();
     //game_settings->SetFullscreenMode(EWindowMode::WindowedFullscreen);
     //game_settings->ApplySettings(true);
