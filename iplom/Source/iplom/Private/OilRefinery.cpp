@@ -83,7 +83,7 @@ void AOilRefinery::BeginPlay()
     FVector RoofHeighOffset = FVector(0.0f, 0.0f, 50.0f);
 
     FVector RoofSpawnPosition;
-    speed = 60.0f;
+    speed = 120.0f;
 
     for (int i = 0; i < NumberOfTanks; i++)
     {
