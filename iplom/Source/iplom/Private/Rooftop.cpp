@@ -10,7 +10,7 @@ ARooftop::ARooftop()
 	PrimaryActorTick.bCanEverTick = true;
 
     MaxRotation = 10.0f;
-    OriginalRotation = 0.0f;
+    OriginalRotation = 5.0f;
     RotationSpeed = 3.0f;
     MovementSpeed = 0.0f;  
     FluidReference = nullptr;

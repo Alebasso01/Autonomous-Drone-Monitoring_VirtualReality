@@ -48,7 +48,7 @@ points = [
     {"name": "SERB2","lat":44.582908, "lon":8.941081, "alt":50},
     {"name": "SERB3","lat":44.583435,"lon":8.941107, "alt":50},
     {"name": "SERB4","lat":44.583953,"lon":8.941103, "alt":50},
-    {"name": "SERB5","lat": 44.58434,"lon":8.941150, "alt":50},
+    {"name": "SERB5","lat": 44.58445,"lon":8.941150, "alt":50},
     {"name": "LANDING", "lat": 44.582218, "lon": 8.941591, "alt": 50},
 ]
 

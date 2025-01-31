@@ -112,12 +112,12 @@ void AFluid::CheckForFountainSpawn()
 
         if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) <= Tolerance && !bLeacking)
         {
-            RandomID = FMath::RandRange(1, 20);
-            if (RandomID == 3) 
+            RandomID = FMath::RandRange(1, 5);
+            if (RandomID == 5) 
             {
                 bLeacking = true;
-                OilRefinery->UpdateFountainVisibility(this);
-                GetWorld()->GetTimerManager().SetTimer(LeakageTimer, this, &AFluid::StopLeakage, 5.0f, false);
+                OilRefinery->SpawnFountainForFluid(this);
+                //GetWorld()->GetTimerManager().SetTimer(LeakageTimer, this, &AFluid::StopLeakage, 5.0f, false);
             }
         }
         else if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) > Tolerance && bLeacking)
@@ -142,7 +142,7 @@ void AFluid::UpdateNiagaraGridExtent(FVector GridExtent)
 
 void AFluid::StopLeakage()
 {
-    OilRefinery->UpdateFountainVisibility(this);
+    //OilRefinery->UpdateFountainVisibility(this);
 }
 
 void AFluid::SetMovementSpeed(float speed)

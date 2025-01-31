@@ -2,12 +2,18 @@
 
 
 #include "OilRefinery.h"
+#include "Misc/Paths.h"
+#include "HAL/PlatformProcess.h"
+
+
 
 // Sets default values
 AOilRefinery::AOilRefinery()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+    Drone = nullptr;
 
 	bFountainSpawned = false;
 	NumberOfTanks = 5;
@@ -18,6 +24,8 @@ AOilRefinery::AOilRefinery()
 void AOilRefinery::BeginPlay()
 {
 	Super::BeginPlay();
+
+    FountainArray.Init(nullptr, 5);
 
     // Default Position and Rotation
     FVector SpawnPosition = FVector(0.0f, 0.0f, 0.0f);
@@ -67,18 +75,18 @@ void AOilRefinery::BeginPlay()
     ScaleFluidArray.Add(FluidSize234);
     ScaleFluidArray.Add(FluidSize5);
 
-    FVector ScaleFountain = FVector(8.0f, 8.0f, 5.0f);
+    //FVector ScaleFountain = FVector(8.0f, 8.0f, 8.0f);
 
 
     ATank* SpawnedTank;
     AFluid* SpawnedFluid;
     ARooftop* SpawnedRoof;
-    AFountain* SpawnedFountain;
+    //AFountain* SpawnedFountain;
 
     NumberOfTanks = FMath::Clamp(NumberOfTanks, 0, 5);
 
     FVector Increment = FVector(0.0f, 0.0f, 800.0f);
-    FVector FountainIncrement = Increment + FVector(1200.0f, 0.0f, 300.0f);
+    //FVector FountainIncrement = Increment + FVector(1200.0f, 0.0f, 300.0f);
     FVector RooftopBaseOffset = FVector(-500.0f, 0.0f, 0.0f);
     FVector RoofHeighOffset = FVector(0.0f, 0.0f, 50.0f);
 
@@ -109,12 +117,17 @@ void AOilRefinery::BeginPlay()
         SpawnedRoof->SetMovementSpeed(speed);
 
 
-        SpawnedFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, PositionArray[i] + FountainIncrement, Rotation));
+        /*SpawnedFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, PositionArray[i] + FountainIncrement, Rotation));
         FountainArray.Add(SpawnedFountain);
+        SpawnedFountain->SetOilRefinery(this);
         SpawnedFountain->SetActorScale3D(ScaleFountain);
         SpawnedFountain->SetActorHiddenInGame(true);
+        */
     }
     MoveFluid();
+
+    //GetWorld()->GetTimerManager().SetTimer(Timer, this, &AOilRefinery::CallPythonScript, 5.0f, false);
+
 	
 }
 
@@ -144,29 +157,114 @@ void AOilRefinery::MoveFluid()
 
 }
 
-void AOilRefinery::UpdateFountainVisibility(AFluid* Fluid)
+void AOilRefinery::SpawnFountainForFluid(AFluid* Fluid)
 {
     int i = FluidArray.Find(Fluid);
 
+    FVector Increment = FVector(0.0f, 0.0f, 800.0f);
+    FVector FountainIncrement = Increment + FVector(1200.0f, 0.0f, 300.0f);
+    FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
+    FVector ScaleFountain = FVector(8.0f, 8.0f, 8.0f);
+
+
+    AFountain* SpawnedFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, PositionArray[i] + FountainIncrement, Rotation));
+
+    FountainArray[i] = SpawnedFountain;
+    SpawnedFountain->SetOilRefinery(this);
+    SpawnedFountain->SetActorScale3D(ScaleFountain);
+    //SpawnedFountain->SetActorHiddenInGame(true);
+    
+    Fluid->SetStopMoving(true);
+
+    /*
     if (FountainArray[i]->IsHidden())
     {
         FountainArray[i]->SetActorHiddenInGame(false);
         Fluid->SetStopMoving(true);
-        /*
-        GetWorld()->GetTimerManager().SetTimer(
-            Timer,
-            [this, Fluid]() {
-                UpdateFountainVisibility(Fluid);
-            },
-            5.0f,
-            false
-        );
-        */
     }
     else
     {
         FountainArray[i]->SetActorHiddenInGame(true);
         Fluid->SetStopMoving(false);
     }
+    */
 }
+
+void AOilRefinery::CallPythonScript()
+{
+    FString ScriptPath = TEXT("C:/Users/Andrea A/Unreal Projects/iplom/PythonClient/multirotor/empty.py");
+    FString Command = FString::Printf(TEXT("python \"%s\""), *ScriptPath);
+
+    // Call RunTerminalCommand with the command
+    RunTerminalCommand(Command);
+}
+
+void AOilRefinery::RunTerminalCommand(const FString& Command)
+{
+    UE_LOG(LogTemp, Warning, TEXT("Command in execution: %s"), *Command);
+    FString Output;
+    FString ErrorOutput;
+    int32 ReturnCode = -1;
+
+    // Execute the command
+    bool bSuccess = FPlatformProcess::ExecProcess(*Command, nullptr, &ReturnCode, &Output, &ErrorOutput, nullptr, false);
+
+    if (bSuccess)
+    {
+        UE_LOG(LogTemp, Log, TEXT("Command executed successfully: %s"), *Output);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Command failed to execute. Return code: %d"), ReturnCode);
+        if (!ErrorOutput.IsEmpty())
+        {
+            UE_LOG(LogTemp, Error, TEXT("Error Output: %s"), *ErrorOutput);
+        }
+    }
+
+    // Set up pipes for capturing output
+    FProcHandle ProcessHandle = FPlatformProcess::CreateProc(
+        TEXT("python"),   // Only "python" because it's assumed to be in the system PATH
+        *Command,
+        true,    // bLaunchDetached (false if you want to capture output)
+        false,   // bLaunchHidden (false if you want to see the terminal)
+        false,   // bAllowWritingToSTDOUT
+        nullptr, // Process ID (nullptr since we don’t need it)
+        0,       // Thread Priority (0 for default)
+        nullptr, // Working Directory (null uses the current directory)
+        nullptr  // Environment variables (null uses the default environment)
+    );
+
+    if (ProcessHandle.IsValid()) {
+        UE_LOG(LogTemp, Log, TEXT("Python process started successfully."));
+
+        // Now handle the output capture correctly:
+        /*
+        auto StdOutPipe = FPlatformProcess::GetStdOutPipe(ProcessHandle);
+        if (StdOutPipe) {
+            // Read from the stdout pipe here
+            FString ProcessOutput = FPlatformProcess::ReadPipe(StdOutPipe);
+            if (!ProcessOutput.IsEmpty()) {
+                UE_LOG(LogTemp, Log, TEXT("Python script output: %s"), *ProcessOutput);
+            }
+        }
+        */
+    }
+    else {
+        UE_LOG(LogTemp, Error, TEXT("Failed to start Python process."));
+    }
+}
+
+int AOilRefinery::GetTankID(AFountain* Fountain)
+{
+    int i = FountainArray.Find(Fountain);
+    return i;
+}
+
+void AOilRefinery::SetDrone(APawn* DronePtr)
+{
+    Drone = DronePtr;
+}
+
+
 

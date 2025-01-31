@@ -7,6 +7,7 @@
 #include "Tank.h"
 #include "Fountain.h"
 #include "Rooftop.h"
+#include "HAL/PlatformProcess.h"
 #include "GameFramework/Actor.h"
 #include "OilRefinery.generated.h"
 
@@ -40,6 +41,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ARooftop> RooftopClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	APawn* Drone;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Timer")
 	FTimerHandle Timer;
@@ -78,6 +82,9 @@ public:
 	float speed;
 
 	void MoveFluid();
-	void UpdateFountainVisibility(AFluid* Fluid);
-
+	void SpawnFountainForFluid(AFluid* Fluid);
+	void CallPythonScript();
+	void RunTerminalCommand(const FString& Command);
+	int GetTankID(AFountain* Fountain);
+	void SetDrone(APawn* DronePtr);
 };
