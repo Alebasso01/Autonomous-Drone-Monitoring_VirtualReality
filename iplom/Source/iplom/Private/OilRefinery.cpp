@@ -100,7 +100,7 @@ void AOilRefinery::BeginPlay()
         TankArray.Add(SpawnedTank);
 
         SpawnedFluid = Cast<AFluid>(GetWorld()->SpawnActor<AFluid>(FluidClass, PositionArray[i] + Increment, Rotation));
-        SpawnedFluid->UpdateNiagaraGridExtent(ScaleFluidArray[i]);
+        //SpawnedFluid->UpdateNiagaraGridExtent(ScaleFluidArray[i]);
         FluidArray.Add(SpawnedFluid);
         SpawnedFluid->SetOilRefinery(this);
         SpawnedFluid->SetMovementSpeed(speed);
