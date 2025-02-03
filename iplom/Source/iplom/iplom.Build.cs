@@ -8,7 +8,7 @@ public class iplom : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "Niagara", "AirSim" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "Niagara", "AirSim", "CesiumRuntime"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

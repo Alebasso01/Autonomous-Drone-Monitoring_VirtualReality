@@ -7,6 +7,9 @@
 #include "Tank.h"
 #include "Fountain.h"
 #include "Rooftop.h"
+#include "CesiumCameraManager.h"
+#include "Camera/CameraComponent.h"
+#include "Vehicles/Multirotor/FlyingPawn.h"
 #include "HAL/PlatformProcess.h"
 #include "GameFramework/Actor.h"
 #include "OilRefinery.generated.h"
@@ -43,7 +46,25 @@ public:
 	TSubclassOf<ARooftop> RooftopClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	APawn* Drone;
+	AFlyingPawn* Drone;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	APIPCamera* DroneBottomCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UCameraComponent* DroneBottomCameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	ACesiumCameraManager* CesiumCameraManager;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FCesiumCamera CesiumCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int32 CameraID;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool UpdateCamera;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Timer")
 	FTimerHandle Timer;
@@ -87,4 +108,8 @@ public:
 	void RunTerminalCommand(const FString& Command);
 	int GetTankID(AFountain* Fountain);
 	void SetDrone(APawn* DronePtr);
+	void setCesiumCamera();
+	void UpdateCesiumCamera();
+	void LaunchDroneScript();
+	bool RunPythonScript();
 };

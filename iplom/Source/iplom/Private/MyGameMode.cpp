@@ -17,14 +17,14 @@ void AMyGameMode::BeginPlay()
     // Default Position and Rotation
     FVector SpawnPosition = FVector(0.0f, 0.0f, 0.0f);
     FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
-    FRotator RotationRoof = FRotator(0.0f, 0.0f, 30.0f);
+    FRotator RotationRoof = FRotator(0.0f, 0.0f, 5.0f);
 
 
-    FVector SpawnPositionTank1 = FVector(9050.0f, -23730.0f, -185480.0f);
-    FVector SpawnPositionTank2 = FVector(8770.0f, -29780.0f, -185480.0f);
-    FVector SpawnPositionTank3 = FVector(8980.0f, -35630.0f, -185450.0f);
-    FVector SpawnPositionTank4 = FVector(8720.0f, -41370.0f, -185500.0f);
-    FVector SpawnPositionTank5 = FVector(9110.0f, -46660.0f, -185500.0f);
+    FVector SpawnPositionTank1 = FVector(9050.0f, -24000.0f, -184450.0f);
+    FVector SpawnPositionTank2 = FVector(8770.0f, -29780.0f, -184450.0f);
+    FVector SpawnPositionTank3 = FVector(8980.0f, -35630.0f, -184450.0f);
+    FVector SpawnPositionTank4 = FVector(8720.0f, -41370.0f, -184450.0f);
+    FVector SpawnPositionTank5 = FVector(9110.0f, -46660.0f, -184450.0f);
 
     PositionArray.Add(SpawnPositionTank1);
     PositionArray.Add(SpawnPositionTank2);
@@ -33,9 +33,9 @@ void AMyGameMode::BeginPlay()
     PositionArray.Add(SpawnPositionTank5);
 
 
-    FVector ScaleTank1 = FVector(3.2f, 3.2f, 1.2f);
-    FVector ScaleTank234 = FVector(2.8f, 2.8f, 1.2f);
-    FVector ScaleTank5 = FVector(2.3f, 2.3f, 1.2f);
+    FVector ScaleTank1 = FVector(4.5f, 4.5f, 1.2f);
+    FVector ScaleTank234 = FVector(4.0f, 4.0f, 1.2f);
+    FVector ScaleTank5 = FVector(3.5f, 3.5f, 1.2f);
 
     ScaleTankArray.Add(ScaleTank1);
     ScaleTankArray.Add(ScaleTank234);
@@ -43,9 +43,9 @@ void AMyGameMode::BeginPlay()
     ScaleTankArray.Add(ScaleTank234);
     ScaleTankArray.Add(ScaleTank5);
 
-    FVector FluidSize1 = FVector(4000.0f, 4000.0f, 0.0f);
-    FVector FluidSize234 = FVector(3500.0f, 3500.0f, 0.0f);
-    FVector FluidSize5 = FVector(3000.0f, 3000.0f, 0.0f);
+    FVector FluidSize1 = FVector(1000.0f, 1000.0f, 0.0f);
+    FVector FluidSize234 = FVector(1500.0f, 1500.0f, 0.0f);
+    FVector FluidSize5 = FVector(1000.0f, 1000.0f, 0.0f);
 
     ScaleFluidArray.Add(FluidSize1);
     ScaleFluidArray.Add(FluidSize234);
@@ -78,17 +78,17 @@ void AMyGameMode::BeginPlay()
         TankArray.Add(SpawnedTank);
 
         SpawnedFluid = Cast<AFluid>(GetWorld()->SpawnActor<AFluid>(FluidClass, PositionArray[i] + Increment, Rotation));
-        SpawnedFluid->UpdateNiagaraGridExtent(ScaleFluidArray[i]);
+        //SpawnedFluid->UpdateNiagaraGridExtent(ScaleFluidArray[i]);
         FluidArray.Add(SpawnedFluid);
         //SpawnedFluid->SetGameMode(this);
-        //SpawnedFluid->SetMovementSpeed(speed);
+        SpawnedFluid->SetMovementSpeed(speed);
 
 
         RoofSpawnPosition = PositionArray[i] + Increment + RooftopBaseOffset * ScaleTankArray[i].X * 1.185 + RoofHeighOffset;
 
         SpawnedRoof = Cast<ARooftop>(GetWorld()->SpawnActor<ARooftop>(RooftopClass, RoofSpawnPosition, Rotation));
         SpawnedRoof->SetActorScale3D(ScaleTankArray[i] * 1.185);
-        //SpawnedRoof->SetActorScale3D(ScaleTankArray[i]);
+        SpawnedRoof->SetActorScale3D(ScaleTankArray[i]);
         RoofArray.Add(SpawnedRoof);
         SpawnedRoof->FluidReference = SpawnedFluid;
         SpawnedRoof->SetScaleRoof(ScaleTankArray[i].X * 1.185);
