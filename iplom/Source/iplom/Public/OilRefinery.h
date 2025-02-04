@@ -11,6 +11,7 @@
 #include "Camera/CameraComponent.h"
 #include "Vehicles/Multirotor/FlyingPawn.h"
 #include "HAL/PlatformProcess.h"
+#include "Misc/Paths.h"
 #include "GameFramework/Actor.h"
 #include "OilRefinery.generated.h"
 
@@ -26,6 +27,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	// Called when the game ends or when removed
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
 
 public:	
 	// Called every frame
@@ -67,7 +71,9 @@ public:
 	bool UpdateCamera;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Timer")
-	FTimerHandle Timer;
+	FTimerHandle CesiumCameraTimer;
+
+	FProcHandle PowerShellProcessHandle;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tank")
 	TArray<ATank*> TankArray;
@@ -104,12 +110,13 @@ public:
 
 	void MoveFluid();
 	void SpawnFountainForFluid(AFluid* Fluid);
-	void CallPythonScript();
-	void RunTerminalCommand(const FString& Command);
+	//void CallPythonScript();
+	//void RunTerminalCommand(const FString& Command);
 	int GetTankID(AFountain* Fountain);
 	void SetDrone(APawn* DronePtr);
 	void setCesiumCamera();
 	void UpdateCesiumCamera();
-	void LaunchDroneScript();
-	bool RunPythonScript();
+	void LaunchPythonDroneScript();
+	void StopPythonDroneScript();
+	//bool RunPythonScript();
 };

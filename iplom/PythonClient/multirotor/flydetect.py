@@ -40,14 +40,16 @@ def geodetic_to_enu(lat, lon, alt, lat_ref, lon_ref, alt_ref):
 # Fattore di scala per mappare le coordinate geografiche nel mondo Unreal
 scale = 1  # Puoi cambiare questo valore per ottenere una mappatura più precisa
 
+height = 40
+
 points = [
-    {"name": "TAKEOFF", "lat": 44.582235, "lon": 8.941572, "alt": 50},
-    {"name": "SERB1", "lat": 44.582395, "lon": 8.941133, "alt": 50},
-    {"name": "SERB2", "lat": 44.582908, "lon": 8.941081, "alt": 50},
-    {"name": "SERB3", "lat": 44.583435, "lon": 8.941107, "alt": 50},
-    {"name": "SERB4", "lat": 44.583953, "lon": 8.941103, "alt": 50},
-    {"name": "SERB5", "lat": 44.58445, "lon": 8.941150, "alt": 50},
-    {"name": "LANDING", "lat": 44.582218, "lon": 8.941591, "alt": 50},
+    {"name": "TAKEOFF", "lat": 44.582235, "lon": 8.941572, "alt": height},
+    {"name": "SERB1", "lat": 44.582395, "lon": 8.941133, "alt": height},
+    {"name": "SERB2", "lat": 44.582908, "lon": 8.941081, "alt": height},
+    {"name": "SERB3", "lat": 44.583435, "lon": 8.941107, "alt": height},
+    {"name": "SERB4", "lat": 44.583953, "lon": 8.941103, "alt": height},
+    {"name": "SERB5", "lat": 44.58445, "lon": 8.941150, "alt": height},
+    {"name": "LANDING", "lat": 44.582218, "lon": 8.941591, "alt": height},
 ]
 
 # Connessione ad AirSim
@@ -115,7 +117,7 @@ for i in range(len(points) - 1):
 
     
 
-            print(f"Detected Mesh: {mesh.name}")
+            print(f"Warning! Hazard at tank number: {mesh.name.split('_')[-1]}")
             #print(f"Bounding Box: {mesh.box2D}")
            # print(f"Mesh Position: ({mesh.location.x_val}, {mesh.location.y_val}, {mesh.location.z_val})")
     else:

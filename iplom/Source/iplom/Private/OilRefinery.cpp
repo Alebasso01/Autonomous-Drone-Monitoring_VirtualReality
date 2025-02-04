@@ -2,8 +2,7 @@
 
 
 #include "OilRefinery.h"
-#include "Misc/Paths.h"
-#include "HAL/PlatformProcess.h"
+#include "Windows/MinWindows.h"
 
 
 
@@ -128,8 +127,17 @@ void AOilRefinery::BeginPlay()
     }
     MoveFluid();
 
-    GetWorld()->GetTimerManager().SetTimer(Timer, this, &AOilRefinery::setCesiumCamera, 2.0f, false);
-    //GetWorld()->GetTimerManager().SetTimer(Timer, this, &AOilRefinery::CallPythonScript, 5.0f, false);
+    LaunchPythonDroneScript();
+
+    GetWorld()->GetTimerManager().SetTimer(CesiumCameraTimer, this, &AOilRefinery::setCesiumCamera, 2.0f, false);  
+}
+
+void AOilRefinery::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    Super::EndPlay(EndPlayReason);
+
+    // Stop the Python script (close PowerShell) when the simulation ends
+    StopPythonDroneScript();
 }
 
 // Called every frame
@@ -238,38 +246,57 @@ void AOilRefinery::SpawnFountainForFluid(AFluid* Fluid)
 }
 */
 
-void AOilRefinery::LaunchDroneScript()
+void AOilRefinery::LaunchPythonDroneScript()
 {
-    FString PowerShellPath = TEXT("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+    // Python exe path
+    FString PythonExe = TEXT("C:\\Users\\Andrea A\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe");
     FString ScriptPath = TEXT("C:\\Users\\Andrea A\\Unreal Projects\\iplom\\PythonClient\\multirotor\\flydetect.py");
 
-    // Build the PowerShell command to run the Python script
-    FString Command = FString::Printf(TEXT("-ExecutionPolicy Bypass -File \"%s\""), *ScriptPath);
+    // Full path to powershell.exe (check your system and modify accordingly)
+    FString PowerShellExe = TEXT("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
 
-    // Launch the process
-    FProcHandle ProcessHandle = FPlatformProcess::CreateProc(
-        *PowerShellPath,    // The executable (PowerShell)
-        *Command,           // Command-line arguments
-        true,               // bLaunchDetached
-        false,              // bLaunchHidden
-        false,              // bLaunchReallyHidden
-        nullptr,            // Out Process ID
-        0,                  // Priority
-        nullptr,            // Optional working directory
-        nullptr             // Pipe handles
+    // PowerShell command to run the Python script
+    FString PowerShellCommand = FString::Printf(TEXT("-NoExit -Command \"& '%s' '%s'\""), *PythonExe, *ScriptPath);
+
+    // Output the PowerShell command to debug
+    UE_LOG(LogTemp, Warning, TEXT("PowerShell Command: %s"), *PowerShellCommand);
+
+    // Launch the PowerShell process
+    PowerShellProcessHandle = FPlatformProcess::CreateProc(
+        *PowerShellExe,          // Full path to PowerShell executable
+        *PowerShellCommand,      // PowerShell command to run the script
+        false,                   // bLaunchDetached (set to false to make the window visible)
+        false,                   // bLaunchHidden (set to false to make the window visible)
+        false,                   // bLaunchReallyHidden
+        nullptr,                 // Out Process ID
+        0,                       // Priority
+        nullptr,                 // Optional working directory
+        nullptr                  // Pipe handles
     );
 
-    if (ProcessHandle.IsValid())
+    if (PowerShellProcessHandle.IsValid())
     {
-        UE_LOG(LogTemp, Warning, TEXT("PowerShell launched successfully."));
+        UE_LOG(LogTemp, Warning, TEXT("Python script launched successfully via PowerShell."));
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to launch PowerShell."));
+        UE_LOG(LogTemp, Error, TEXT("Failed to launch Python script via PowerShell."));
     }
 }
 
+void AOilRefinery::StopPythonDroneScript()
+{
+    if (PowerShellProcessHandle.IsValid())
+    {
+        // Attempt to terminate the PowerShell process
+        FPlatformProcess::TerminateProc(PowerShellProcessHandle);
 
+        // Log that we attempted to terminate the process
+        UE_LOG(LogTemp, Warning, TEXT("Terminating PowerShell process..."));
+    }
+}
+
+/*
 void AOilRefinery::CallPythonScript()
 {
     FString ScriptPath = TEXT("C:/Users/Andrea A/Unreal Projects/iplom/PythonClient/multirotor/empty.py");
@@ -278,7 +305,9 @@ void AOilRefinery::CallPythonScript()
     // Call RunTerminalCommand with the command
     RunTerminalCommand(Command);
 }
+*/
 
+/*
 void AOilRefinery::RunTerminalCommand(const FString& Command)
 {
     UE_LOG(LogTemp, Warning, TEXT("Command in execution: %s"), *Command);
@@ -328,12 +357,13 @@ void AOilRefinery::RunTerminalCommand(const FString& Command)
                 UE_LOG(LogTemp, Log, TEXT("Python script output: %s"), *ProcessOutput);
             }
         }
-        */
+        *//*
     }
     else {
         UE_LOG(LogTemp, Error, TEXT("Failed to start Python process."));
     }
 }
+*/
 
 int AOilRefinery::GetTankID(AFountain* Fountain)
 {
