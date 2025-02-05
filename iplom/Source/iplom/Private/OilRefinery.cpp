@@ -88,7 +88,7 @@ void AOilRefinery::BeginPlay()
     FVector Increment = FVector(0.0f, 0.0f, 200.0f);
     //FVector FountainIncrement = Increment + FVector(1200.0f, 0.0f, 300.0f);
     FVector RooftopBaseOffset = FVector(-500.0f, 0.0f, 0.0f);
-    FVector RoofHeighOffset = FVector(0.0f, 0.0f, 50.0f);
+    FVector RoofHeighOffset = FVector(0.0f, 0.0f, 0.0f);
 
     FVector RoofSpawnPosition;
     speed = 60.0f;
@@ -128,6 +128,7 @@ void AOilRefinery::BeginPlay()
     MoveFluid();
 
     LaunchPythonDroneScript();
+    CreateDroneHUD();
 
     GetWorld()->GetTimerManager().SetTimer(CesiumCameraTimer, this, &AOilRefinery::setCesiumCamera, 2.0f, false);  
 }
@@ -147,6 +148,8 @@ void AOilRefinery::Tick(float DeltaTime)
 
     if(UpdateCamera)
         UpdateCesiumCamera();
+
+    UpdateDroneHUD();
 }
 
 void AOilRefinery::MoveFluid()
@@ -250,7 +253,7 @@ void AOilRefinery::LaunchPythonDroneScript()
 {
     // Python exe path
     FString PythonExe = TEXT("C:\\Users\\Andrea A\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe");
-    FString ScriptPath = TEXT("C:\\Users\\Andrea A\\Unreal Projects\\iplom\\PythonClient\\multirotor\\flydetect.py");
+    FString ScriptPath = TEXT("C:\\Users\\Andrea A\\Unreal Projects\\iplom\\PythonClient\\multirotor\\drone_iplom.py");
 
     // Full path to powershell.exe (check your system and modify accordingly)
     FString PowerShellExe = TEXT("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
@@ -293,6 +296,31 @@ void AOilRefinery::StopPythonDroneScript()
 
         // Log that we attempted to terminate the process
         UE_LOG(LogTemp, Warning, TEXT("Terminating PowerShell process..."));
+    }
+}
+
+void AOilRefinery::CreateDroneHUD()
+{
+    DroneHUD = CreateWidget<UDroneHUD>(GetWorld(), DroneHUDClass);
+    DroneHUD->InitializeArrays();
+    DroneHUD->AddToViewport();
+}
+
+void AOilRefinery::UpdateDroneHUD()
+{
+    FString PathToMeasurements = FPaths::ProjectContentDir();
+    PathToMeasurements.Append("measurements.csv");
+    TArray<FString> MeasurementsArray;
+    FFileHelper::LoadFileToStringArray(MeasurementsArray, *PathToMeasurements);
+
+    FString CurrentInclination;
+    FString CurrentStatus;
+
+    for (int i = 0; i < MeasurementsArray.Num(); i++)
+    {
+        MeasurementsArray[i].Split(TEXT(","), &CurrentInclination, &CurrentStatus);
+        DroneHUD->SetInclination(CurrentInclination, i);
+        DroneHUD->SetStatus(CurrentStatus, i);
     }
 }
 
@@ -394,6 +422,7 @@ void AOilRefinery::setCesiumCamera()
     CameraID = CesiumCameraManager->AddCamera(CesiumCamera);
 
     UpdateCamera = true;
+    UpdateDroneHUD();
 }
 
 void AOilRefinery::UpdateCesiumCamera()

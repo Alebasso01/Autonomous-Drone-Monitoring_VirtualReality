@@ -44,7 +44,7 @@ void ARooftop::MoveAndRotate(bool bFluidMovingUp)
 
     // Get fluid's position
     FVector FluidPosition = FluidReference->GetActorLocation();
-    float RooftopHeightOffset = 50.0f;
+    float RooftopHeightOffset = 0.0f;
     float RooftopBaseOffset = -500.0f; // to be adjusted, and why this number? Also in MyGameMode.cpp, line 70
 
     // Next rotation

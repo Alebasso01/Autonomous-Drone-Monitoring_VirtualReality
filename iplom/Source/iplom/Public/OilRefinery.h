@@ -7,6 +7,7 @@
 #include "Tank.h"
 #include "Fountain.h"
 #include "Rooftop.h"
+#include "DroneHUD.h"
 #include "CesiumCameraManager.h"
 #include "Camera/CameraComponent.h"
 #include "Vehicles/Multirotor/FlyingPawn.h"
@@ -49,11 +50,17 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ARooftop> RooftopClass;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDroneHUD> DroneHUDClass;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	AFlyingPawn* Drone;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	APIPCamera* DroneBottomCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UDroneHUD* DroneHUD;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UCameraComponent* DroneBottomCameraComponent;
@@ -119,4 +126,6 @@ public:
 	void LaunchPythonDroneScript();
 	void StopPythonDroneScript();
 	//bool RunPythonScript();
+	void CreateDroneHUD();
+	void UpdateDroneHUD();
 };
