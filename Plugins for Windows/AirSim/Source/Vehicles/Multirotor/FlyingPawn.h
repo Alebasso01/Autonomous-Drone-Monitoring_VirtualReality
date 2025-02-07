@@ -37,6 +37,9 @@ public:
     void setRotorSpeed(const std::vector<MultirotorPawnEvents::RotorActuatorInfo>& rotor_infos);
     void initializeRotors(const std::vector<MultirotorPawnEvents::RotorActuatorInfo>& rotor_infos);
 
+    // Custom addition to the original AirSim header file
+    APIPCamera* getBottomCenterCamera();
+
 private: //variables
     //Unreal components
     UPROPERTY()
