@@ -13,6 +13,9 @@
 #include "Vehicles/Multirotor/FlyingPawn.h"
 #include "HAL/PlatformProcess.h"
 #include "Misc/Paths.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "GameFramework/Actor.h"
 #include "OilRefinery.generated.h"
 
@@ -106,6 +109,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Size")
 	TArray<FVector> FluidSizeArray;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	USoundCue* AlarmSound;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FTimerHandle AlarmTimer;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float AlarmDuration;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UAudioComponent* CurrentSound;
+
 	// Easy to access property in Editor to select how many tanks to spawn
 	// Select a number less than 5 if your PC doesn't handle fluently the complete facility
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Tank")
@@ -128,4 +143,6 @@ public:
 	//bool RunPythonScript();
 	void CreateDroneHUD();
 	void UpdateDroneHUD();
+	void PlayAlarmSound();
+	void StopAlarmSound();
 };

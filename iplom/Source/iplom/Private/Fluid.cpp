@@ -112,8 +112,8 @@ void AFluid::CheckForFountainSpawn()
 
         if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) <= Tolerance && !bLeacking)
         {
-            RandomID = FMath::RandRange(1, 1);
-            if (RandomID == 1) 
+            RandomID = FMath::RandRange(1, 10);
+            if (RandomID == 3) 
             {
                 bLeacking = true;
                 OilRefinery->SpawnFountainForFluid(this);

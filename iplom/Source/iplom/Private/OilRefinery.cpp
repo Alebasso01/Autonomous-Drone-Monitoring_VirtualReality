@@ -18,12 +18,16 @@ AOilRefinery::AOilRefinery()
 	bFountainSpawned = false;
 	NumberOfTanks = 5;
 
+    AlarmDuration = 15.0f;
+    CurrentSound = nullptr;
 }
 
 // Called when the game starts or when spawned
 void AOilRefinery::BeginPlay()
 {
 	Super::BeginPlay();
+
+    AlarmSound = LoadObject<USoundCue>(nullptr, TEXT("/Script/Engine.SoundCue'/Game/AlarmCut_Cue.AlarmCut_Cue'"));
 
     FountainArray.Init(nullptr, 5);
 
@@ -41,11 +45,11 @@ void AOilRefinery::BeginPlay()
     FVector SpawnPositionTank5 = FVector(9110.0f, -46660.0f, -185500.0f);
     */
 
-    FVector SpawnPositionTank1 = FVector(-4500.0f, -2630.0f, -2650.0f);
-    FVector SpawnPositionTank2 = FVector(-4840.0f, -8800.0f, -2800.0f);
-    FVector SpawnPositionTank3 = FVector(-4790.0f, -14370.0f, -2800.0f);
-    FVector SpawnPositionTank4 = FVector(-4930.0f, -20000.0f, -2800.0f);
-    FVector SpawnPositionTank5 = FVector(-4400.0f, -25500.0f, -2800.0f);
+    FVector SpawnPositionTank1 = FVector(-4500.0f, -2630.0f, -2550.0f);
+    FVector SpawnPositionTank2 = FVector(-4840.0f, -8800.0f, -2700.0f);
+    FVector SpawnPositionTank3 = FVector(-4790.0f, -14370.0f, -2700.0f);
+    FVector SpawnPositionTank4 = FVector(-4930.0f, -20000.0f, -2700.0f);
+    FVector SpawnPositionTank5 = FVector(-4400.0f, -25500.0f, -2700.0f);
 
 
     PositionArray.Add(SpawnPositionTank1);
@@ -55,9 +59,9 @@ void AOilRefinery::BeginPlay()
     PositionArray.Add(SpawnPositionTank5);
 
 
-    FVector ScaleTank1 = FVector(4.5f, 4.5f, 1.2f);
-    FVector ScaleTank234 = FVector(4.0f, 4.0f, 1.2f);
-    FVector ScaleTank5 = FVector(3.5f, 3.5f, 1.2f);
+    FVector ScaleTank1 = FVector(4.5f, 4.5f, 2.2f);
+    FVector ScaleTank234 = FVector(4.0f, 4.0f, 2.2f);
+    FVector ScaleTank5 = FVector(3.5f, 3.5f, 2.2f);
 
     ScaleTankArray.Add(ScaleTank1);
     ScaleTankArray.Add(ScaleTank234);
@@ -107,14 +111,14 @@ void AOilRefinery::BeginPlay()
         SpawnedFluid->SetMovementSpeed(speed);
 
 
-        RoofSpawnPosition = PositionArray[i] + Increment + RooftopBaseOffset * ScaleTankArray[i].X * 1.185 + RoofHeighOffset;
+        RoofSpawnPosition = PositionArray[i] + Increment + RooftopBaseOffset * ScaleTankArray[i].X + RoofHeighOffset;
 
         SpawnedRoof = Cast<ARooftop>(GetWorld()->SpawnActor<ARooftop>(RooftopClass, RoofSpawnPosition, Rotation));
-        SpawnedRoof->SetActorScale3D(ScaleTankArray[i] * 1.185);
+        SpawnedRoof->SetActorScale3D(ScaleTankArray[i]);
         //SpawnedRoof->SetActorScale3D(ScaleTankArray[i]);
         RoofArray.Add(SpawnedRoof);
         SpawnedRoof->FluidReference = SpawnedFluid;
-        SpawnedRoof->SetScaleRoof(ScaleTankArray[i].X * 1.185);
+        SpawnedRoof->SetScaleRoof(ScaleTankArray[i].X);
         SpawnedRoof->SetMovementSpeed(speed);
 
 
@@ -316,12 +320,47 @@ void AOilRefinery::UpdateDroneHUD()
     FString CurrentInclination;
     FString CurrentStatus;
 
+
     for (int i = 0; i < MeasurementsArray.Num(); i++)
     {
         MeasurementsArray[i].Split(TEXT(","), &CurrentInclination, &CurrentStatus);
         DroneHUD->SetInclination(CurrentInclination, i);
+
+        if (CurrentStatus.Contains(TEXT("detect")))
+        {
+            FLinearColor SelectedHUDColor = DroneHUD->GetColor(i).GetSpecifiedColor();
+            if (SelectedHUDColor.Equals(FLinearColor::White))
+            {
+                DroneHUD->SetStatusColor(FVector(1, 0, 0), i);
+                PlayAlarmSound();
+            }
+        }
+        else if(CurrentStatus.Contains(TEXT("safe")))
+        {
+            DroneHUD->SetStatusColor(FVector(0, 1, 0), i);
+        }
+        else
+        {
+            DroneHUD->SetStatusColor(FVector(1, 1, 1), i);
+        }
+
         DroneHUD->SetStatus(CurrentStatus, i);
+
     }
+}
+
+void AOilRefinery::PlayAlarmSound()
+{
+    if (CurrentSound == nullptr || !CurrentSound->IsPlaying())
+        CurrentSound = UGameplayStatics::SpawnSound2D(GetWorld(), AlarmSound);
+
+    GetWorld()->GetTimerManager().SetTimer(CesiumCameraTimer, this, &AOilRefinery::StopAlarmSound, AlarmDuration, false);
+}
+
+void AOilRefinery::StopAlarmSound()
+{
+    if (CurrentSound && CurrentSound->IsPlaying())
+        CurrentSound->Stop();
 }
 
 /*
@@ -422,7 +461,7 @@ void AOilRefinery::setCesiumCamera()
     CameraID = CesiumCameraManager->AddCamera(CesiumCamera);
 
     UpdateCamera = true;
-    UpdateDroneHUD();
+    // UpdateDroneHUD();
 }
 
 void AOilRefinery::UpdateCesiumCamera()
