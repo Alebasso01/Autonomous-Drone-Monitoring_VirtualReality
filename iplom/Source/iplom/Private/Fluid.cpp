@@ -29,8 +29,16 @@ void AFluid::BeginPlay()
     OriginPosition = GetActorLocation();
 
     // Calculate the end positions for up and down movement
-    EndPositionUp = OriginPosition + FVector(0, 0, 300);
-    EndPositionDown = OriginPosition - FVector(0, 0, 0);
+    if (OriginPosition.Z > -2700.0f)
+    {
+        EndPositionUp = OriginPosition;
+        EndPositionDown = OriginPosition - FVector(0, 0, 300);
+    }
+    else
+    {
+        EndPositionUp = OriginPosition + FVector(0, 0, 300);
+        EndPositionDown = OriginPosition;
+    }
 
     // Set initial direction
     bMovingUp = true;
@@ -112,12 +120,12 @@ void AFluid::CheckForFountainSpawn()
 
         if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) <= Tolerance && !bLeacking)
         {
-            RandomID = FMath::RandRange(1, 20);
-            if (RandomID == 3) 
+            RandomID = FMath::RandRange(1, 1);
+            if (RandomID == 1) 
             {
                 bLeacking = true;
-                OilRefinery->UpdateFountainVisibility(this);
-                GetWorld()->GetTimerManager().SetTimer(LeakageTimer, this, &AFluid::StopLeakage, 5.0f, false);
+                OilRefinery->SpawnFountainForFluid(this);
+                //GetWorld()->GetTimerManager().SetTimer(LeakageTimer, this, &AFluid::StopLeakage, 5.0f, false);
             }
         }
         else if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) > Tolerance && bLeacking)
@@ -140,10 +148,7 @@ void AFluid::UpdateNiagaraGridExtent(FVector GridExtent)
     NiagaraComponent->SetNiagaraVariableVec2(FString("WorldGridSize"), FVector2D(GridExtent.X, GridExtent.Y));  
 }
 
-void AFluid::StopLeakage()
-{
-    OilRefinery->UpdateFountainVisibility(this);
-}
+
 
 void AFluid::SetMovementSpeed(float speed)
 {

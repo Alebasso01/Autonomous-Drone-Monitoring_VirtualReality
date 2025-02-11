@@ -96,3 +96,9 @@ void AFlyingPawn::initializeRotors(const std::vector<MultirotorPawnEvents::Rotor
     }
     pawn_events_.getActuatorSignal().disconnect(init_id_);
 }
+
+// Custom addition to the original AirSim code
+APIPCamera* AFlyingPawn::getBottomCenterCamera()
+{
+    return camera_bottom_center_;
+}

@@ -11,7 +11,7 @@ ARooftop::ARooftop()
 
     MaxRotation = 10.0f;
     OriginalRotation = 0.0f;
-    RotationSpeed = 3.0f;
+    RotationSpeed = 0.5f;
     MovementSpeed = 0.0f;  
     FluidReference = nullptr;
     ScaleRoof = 1.0f;
@@ -44,7 +44,7 @@ void ARooftop::MoveAndRotate(bool bFluidMovingUp)
 
     // Get fluid's position
     FVector FluidPosition = FluidReference->GetActorLocation();
-    float RooftopHeightOffset = 50.0f;
+    float RooftopHeightOffset = 0.0f;
     float RooftopBaseOffset = -500.0f; // to be adjusted, and why this number? Also in MyGameMode.cpp, line 70
 
     // Next rotation
@@ -53,7 +53,7 @@ void ARooftop::MoveAndRotate(bool bFluidMovingUp)
     if (bFluidMovingUp)
         TargetRotation = FRotator(MaxRotation, 0.0f, 0.0f);
     else
-        TargetRotation = FRotator(OriginalRotation, 0.0f, 0.0f);
+        TargetRotation = FRotator(0.0f, 0.0f, 0.0f);
     FRotator NewRotation = FMath::RInterpConstantTo(CurrentRotation, TargetRotation, GetWorld()->GetDeltaSeconds(), RotationSpeed);
 
 
@@ -79,3 +79,5 @@ void ARooftop::SetMovementSpeed(float speed)
 {
     MovementSpeed = speed;
 }
+
+

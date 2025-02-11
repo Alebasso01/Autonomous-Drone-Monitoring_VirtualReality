@@ -7,6 +7,15 @@
 #include "Tank.h"
 #include "Fountain.h"
 #include "Rooftop.h"
+#include "DroneHUD.h"
+#include "CesiumCameraManager.h"
+#include "Camera/CameraComponent.h"
+#include "Vehicles/Multirotor/FlyingPawn.h"
+#include "HAL/PlatformProcess.h"
+#include "Misc/Paths.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "GameFramework/Actor.h"
 #include "OilRefinery.generated.h"
 
@@ -22,6 +31,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	// Called when the game ends or when removed
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
 
 public:	
 	// Called every frame
@@ -41,8 +53,37 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ARooftop> RooftopClass;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDroneHUD> DroneHUDClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	AFlyingPawn* Drone;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	APIPCamera* DroneBottomCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UDroneHUD* DroneHUD;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UCameraComponent* DroneBottomCameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	ACesiumCameraManager* CesiumCameraManager;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FCesiumCamera CesiumCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int32 CameraID;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool UpdateCamera;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Timer")
-	FTimerHandle Timer;
+	FTimerHandle CesiumCameraTimer;
+
+	FProcHandle PowerShellProcessHandle;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tank")
 	TArray<ATank*> TankArray;
@@ -59,6 +100,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
 	TArray<FVector> PositionArray;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
+	TArray<FVector> PositionArrayFluid;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
+	TArray<FVector> PositionArrayRoof;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
+	TArray<FVector> PositionArrayFountain;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
+	TArray<FRotator> RotationArray;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Scale")
 	TArray<FVector> ScaleTankArray;
 
@@ -67,6 +120,18 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Size")
 	TArray<FVector> FluidSizeArray;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	USoundCue* AlarmSound;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FTimerHandle AlarmTimer;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float AlarmDuration;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UAudioComponent* CurrentSound;
 
 	// Easy to access property in Editor to select how many tanks to spawn
 	// Select a number less than 5 if your PC doesn't handle fluently the complete facility
@@ -78,6 +143,18 @@ public:
 	float speed;
 
 	void MoveFluid();
-	void UpdateFountainVisibility(AFluid* Fluid);
-
+	void SpawnFountainForFluid(AFluid* Fluid);
+	//void CallPythonScript();
+	//void RunTerminalCommand(const FString& Command);
+	int GetTankID(AFountain* Fountain);
+	void SetDrone(APawn* DronePtr);
+	void setCesiumCamera();
+	void UpdateCesiumCamera();
+	void LaunchPythonDroneScript();
+	void StopPythonDroneScript();
+	//bool RunPythonScript();
+	void CreateDroneHUD();
+	void UpdateDroneHUD();
+	void PlayAlarmSound();
+	void StopAlarmSound();
 };

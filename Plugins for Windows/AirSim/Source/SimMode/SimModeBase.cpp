@@ -22,6 +22,8 @@
 
 #include "DrawDebugHelpers.h"
 
+#include "AirSimGameMode.h"
+
 //TODO: this is going to cause circular references which is fine here but
 //in future we should consider moving SimMode not derived from AActor and move
 //it to AirLib and directly implement WorldSimApiBase interface
@@ -630,6 +632,36 @@ APawn* ASimModeBase::createVehiclePawn(const AirSimSettings::VehicleSetting& veh
         getSettings().pawn_paths.at(getVehiclePawnPathName(vehicle_setting)).pawn_bp);
     APawn* spawned_pawn = static_cast<APawn*>(this->GetWorld()->SpawnActor(
         vehicle_bp_class, &spawn_position, &spawn_rotation, pawn_spawn_params));
+
+
+    // Custom addition to original code ######################################################################
+    AGameModeBase* CurrentGameMode = UGameplayStatics::GetGameMode(GetWorld());
+
+    /*
+    if (CurrentGameMode)
+    {
+        // Log the name of the current GameMode
+        UE_LOG(LogTemp, Warning, TEXT("Current Game Mode: %s"), *CurrentGameMode->GetName());
+    }
+    else
+        UE_LOG(LogTemp, Warning, TEXT("No GameMode found"));
+    */
+    
+    AAirSimGameMode* AirSimGameMode = Cast<AAirSimGameMode>(CurrentGameMode);
+
+    /*
+    if (AirSimGameMode)
+    {
+        // Now you can access custom properties or methods of your specific GameMode
+        UE_LOG(LogTemp, Warning, TEXT("Custom AirSim Game Mode detected!"));
+    }
+    else
+        UE_LOG(LogTemp, Warning, TEXT("Not the custom Drone Game Mode."));
+    */
+
+    AirSimGameMode->SetSpawnedDrone(spawned_pawn);
+    // Custom addition end ###################################################################################
+
 
     spawned_actors_.Add(spawned_pawn);
 

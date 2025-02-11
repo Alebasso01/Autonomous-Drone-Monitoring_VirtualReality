@@ -54,6 +54,11 @@ AAirSimGameMode::AAirSimGameMode(const FObjectInitializer& ObjectInitializer)
     static IImageWrapperModule& ImageWrapperModule = FModuleManager::LoadModuleChecked<IImageWrapperModule>(TEXT("ImageWrapper"));
 }
 
+void AAirSimGameMode::SetSpawnedDrone(APawn* DronePtr)
+{
+    SpawnedDrone = DronePtr;
+}
+
 //UGameUserSettings* AAirSimGameMode::GetGameUserSettings()
 //{
 //    if (GEngine != nullptr)
@@ -66,6 +71,9 @@ AAirSimGameMode::AAirSimGameMode(const FObjectInitializer& ObjectInitializer)
 void AAirSimGameMode::StartPlay()
 {
     Super::StartPlay();
+
+    SpawnedRefinery = Cast<AOilRefinery>(GetWorld()->SpawnActor<AOilRefinery>(RefineryClass, FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f)));
+    SpawnedRefinery->SetDrone(SpawnedDrone);
 
     //UGameUserSettings* game_settings = GetGameUserSettings();
     //game_settings->SetFullscreenMode(EWindowMode::WindowedFullscreen);

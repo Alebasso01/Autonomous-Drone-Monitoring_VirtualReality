@@ -30,5 +30,10 @@ public:
     UPROPERTY(VisibleAnywhere)
     AOilRefinery* SpawnedRefinery;
 
+    UPROPERTY(VisibleAnywhere)
+    APawn* SpawnedDrone;
+
+    void SetSpawnedDrone(APawn* DronePtr);
+
 
 };
