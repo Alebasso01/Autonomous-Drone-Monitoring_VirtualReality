@@ -34,7 +34,6 @@ void AOilRefinery::BeginPlay()
     // Default Position and Rotation
     FVector SpawnPosition = FVector(0.0f, 0.0f, 0.0f);
     FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
-    FRotator RotationRoof = FRotator(0.0f, 0.0f, 30.0f);
 
     /*
     coordinate per spawn corrette prima di inserire il drone
@@ -45,12 +44,26 @@ void AOilRefinery::BeginPlay()
     FVector SpawnPositionTank5 = FVector(9110.0f, -46660.0f, -185500.0f);
     */
 
-    FVector SpawnPositionTank1 = FVector(-4500.0f, -2630.0f, -2550.0f);
-    FVector SpawnPositionTank2 = FVector(-4840.0f, -8800.0f, -2700.0f);
+
+    FVector SpawnPositionFountain1 = FVector(-2550.0f, -2630.0f, -2260.0f);
+    FVector SpawnPositionFountain2 = FVector(-3000.0f, -8550.0f, -2030.0f);
+    FVector SpawnPositionFountain3 = FVector(-2950.0f, -14370.0f, -2020.0f);
+    FVector SpawnPositionFountain4 = FVector(-3100.0f, -20000.0f, -2000.0f);
+    FVector SpawnPositionFountain5 = FVector(-3070.0f, -25500.0f, -2025.0f);
+
+    PositionArrayFountain.Add(SpawnPositionFountain1);
+    PositionArrayFountain.Add(SpawnPositionFountain2);
+    PositionArrayFountain.Add(SpawnPositionFountain3);
+    PositionArrayFountain.Add(SpawnPositionFountain4);
+    PositionArrayFountain.Add(SpawnPositionFountain5);
+
+
+
+    FVector SpawnPositionTank1 = FVector(-4500.0f, -2630.0f, -2950.0f);
+    FVector SpawnPositionTank2 = FVector(-4840.0f, -8550.0f, -2700.0f);
     FVector SpawnPositionTank3 = FVector(-4790.0f, -14370.0f, -2700.0f);
     FVector SpawnPositionTank4 = FVector(-4930.0f, -20000.0f, -2700.0f);
-    FVector SpawnPositionTank5 = FVector(-4400.0f, -25500.0f, -2700.0f);
-
+    FVector SpawnPositionTank5 = FVector(-4550.0f, -25500.0f, -2700.0f);
 
     PositionArray.Add(SpawnPositionTank1);
     PositionArray.Add(SpawnPositionTank2);
@@ -58,9 +71,48 @@ void AOilRefinery::BeginPlay()
     PositionArray.Add(SpawnPositionTank4);
     PositionArray.Add(SpawnPositionTank5);
 
+    FVector IncrementFull = FVector(0.0f, 0.0f, 300.0f);
+
+    FVector SpawnPositionRoof1 = FVector(-6700.0f, -2630.0f, -2700.0f) + IncrementFull;;
+    FVector SpawnPositionRoof2 = FVector(-7000.0f, -8550.0f, -2700.0f);
+    FVector SpawnPositionRoof3 = FVector(-6850.0f, -14450.0f, -2700.0f);
+    FVector SpawnPositionRoof4 = FVector(-7050.0f, -20000.0f, -2700.0f) + IncrementFull;
+    FVector SpawnPositionRoof5 = FVector(-6350.0f, -25450.0f, -2700.0f);
+
+    PositionArrayRoof.Add(SpawnPositionRoof1);
+    PositionArrayRoof.Add(SpawnPositionRoof2);
+    PositionArrayRoof.Add(SpawnPositionRoof3);
+    PositionArrayRoof.Add(SpawnPositionRoof4);
+    PositionArrayRoof.Add(SpawnPositionRoof5);
+
+    FVector SpawnPositionFluid1 = FVector(-4500.0f, -2630.0f, -2700.0f) + IncrementFull;
+    FVector SpawnPositionFluid2 = FVector(-4840.0f, -8800.0f, -2700.0f);
+    FVector SpawnPositionFluid3 = FVector(-4790.0f, -14370.0f, -2700.0f);
+    FVector SpawnPositionFluid4 = FVector(-4930.0f, -20000.0f, -2700.0f) + IncrementFull;
+    FVector SpawnPositionFluid5 = FVector(-4400.0f, -25500.0f, -2700.0f);
+
+
+    PositionArrayFluid.Add(SpawnPositionFluid1);
+    PositionArrayFluid.Add(SpawnPositionFluid2);
+    PositionArrayFluid.Add(SpawnPositionFluid3);
+    PositionArrayFluid.Add(SpawnPositionFluid4);
+    PositionArrayFluid.Add(SpawnPositionFluid5);
+
+    FRotator Rotation1 = FRotator(9.0f, 0.0f, 0.0f);
+    FRotator Rotation2 = FRotator(0.0f, 0.0f, 0.0f);
+    FRotator Rotation3 = FRotator(0.0f, 0.0f, 0.0f);
+    FRotator Rotation4 = FRotator(9.0f, 0.0f, 0.0f);
+    FRotator Rotation5 = FRotator(0.0f, 0.0f, 0.0f);
+
+    RotationArray.Add(Rotation1);
+    RotationArray.Add(Rotation2);
+    RotationArray.Add(Rotation3);
+    RotationArray.Add(Rotation4);
+    RotationArray.Add(Rotation5);
+
 
     FVector ScaleTank1 = FVector(4.5f, 4.5f, 2.2f);
-    FVector ScaleTank234 = FVector(4.0f, 4.0f, 2.2f);
+    FVector ScaleTank234 = FVector(4.2f, 4.2f, 2.2f);
     FVector ScaleTank5 = FVector(3.5f, 3.5f, 2.2f);
 
     ScaleTankArray.Add(ScaleTank1);
@@ -89,13 +141,8 @@ void AOilRefinery::BeginPlay()
 
     NumberOfTanks = FMath::Clamp(NumberOfTanks, 0, 5);
 
-    FVector Increment = FVector(0.0f, 0.0f, 200.0f);
-    //FVector FountainIncrement = Increment + FVector(1200.0f, 0.0f, 300.0f);
-    FVector RooftopBaseOffset = FVector(-500.0f, 0.0f, 0.0f);
-    FVector RoofHeighOffset = FVector(0.0f, 0.0f, 0.0f);
-
     FVector RoofSpawnPosition;
-    speed = 60.0f;
+    speed = 30.0f;
 
     for (int i = 0; i < NumberOfTanks; i++)
     {
@@ -103,7 +150,7 @@ void AOilRefinery::BeginPlay()
         SpawnedTank->SetActorScale3D(ScaleTankArray[i]);
         TankArray.Add(SpawnedTank);
 
-        SpawnedFluid = Cast<AFluid>(GetWorld()->SpawnActor<AFluid>(FluidClass, PositionArray[i] + Increment, Rotation));
+        SpawnedFluid = Cast<AFluid>(GetWorld()->SpawnActor<AFluid>(FluidClass, PositionArrayFluid[i], Rotation));
         //SpawnedFluid->UpdateNiagaraGridExtent(ScaleFluidArray[i]);
         SpawnedFluid->SetActorScale3D(ScaleFluidArray[i]);
         FluidArray.Add(SpawnedFluid);
@@ -111,16 +158,14 @@ void AOilRefinery::BeginPlay()
         SpawnedFluid->SetMovementSpeed(speed);
 
 
-        RoofSpawnPosition = PositionArray[i] + Increment + RooftopBaseOffset * ScaleTankArray[i].X + RoofHeighOffset;
+      
 
-        SpawnedRoof = Cast<ARooftop>(GetWorld()->SpawnActor<ARooftop>(RooftopClass, RoofSpawnPosition, Rotation));
+        SpawnedRoof = Cast<ARooftop>(GetWorld()->SpawnActor<ARooftop>(RooftopClass, PositionArrayRoof[i], RotationArray[i]));
         SpawnedRoof->SetActorScale3D(ScaleTankArray[i]);
-        //SpawnedRoof->SetActorScale3D(ScaleTankArray[i]);
         RoofArray.Add(SpawnedRoof);
         SpawnedRoof->FluidReference = SpawnedFluid;
         SpawnedRoof->SetScaleRoof(ScaleTankArray[i].X);
         SpawnedRoof->SetMovementSpeed(speed);
-
 
         /*SpawnedFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, PositionArray[i] + FountainIncrement, Rotation));
         FountainArray.Add(SpawnedFountain);
@@ -179,27 +224,10 @@ void AOilRefinery::SpawnFountainForFluid(AFluid* Fluid)
 {
     int i = FluidArray.Find(Fluid);
 
-    FVector Increment = FVector(0.0f, 0.0f, 500.0f);
-    FVector FountainIncrement = Increment + FVector(1200.0f, 0.0f, 100.0f);
     FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
-    FVector ScaleFountain1 = FVector(1200.0f, 0.0f, 0.0f);
-    FVector ScaleFountain2 = FVector(1200.0f, 0.0f, 0.0f);
-    FVector ScaleFountain3 = FVector(1200.0f, 0.0f, 0.0f);
-    FVector ScaleFountain4 = FVector(1200.0f, 0.0f, 0.0f);
-    FVector ScaleFountain5 = FVector(1200.0f, 0.0f, 0.0f);
-    TArray<FVector> ScaleFountain;
-    ScaleFountain.Add(ScaleFountain1);
-    ScaleFountain.Add(ScaleFountain2);
-    ScaleFountain.Add(ScaleFountain2);
-    ScaleFountain.Add(ScaleFountain2);
-    ScaleFountain.Add(ScaleFountain5);
-//TArray<FVector> SphereIncrement;
 
-
-    AFountain* SpawnedFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, PositionArray[i] + FountainIncrement, Rotation));
-    UStaticMeshComponent* SphereComponent = SpawnedFountain->FindComponentByClass<UStaticMeshComponent>();
-    SphereComponent->SetRelativeLocation(ScaleFountain[i]);
-
+    AFountain* SpawnedFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, PositionArrayFountain[i], Rotation));
+    
     FountainArray[i] = SpawnedFountain;
     SpawnedFountain->SetOilRefinery(this);
     //SpawnedFountain->SetActorScale3D(FVector());

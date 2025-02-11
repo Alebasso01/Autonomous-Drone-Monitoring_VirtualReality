@@ -100,6 +100,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
 	TArray<FVector> PositionArray;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
+	TArray<FVector> PositionArrayFluid;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
+	TArray<FVector> PositionArrayRoof;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
+	TArray<FVector> PositionArrayFountain;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
+	TArray<FRotator> RotationArray;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Scale")
 	TArray<FVector> ScaleTankArray;
 

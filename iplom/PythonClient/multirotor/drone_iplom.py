@@ -141,7 +141,7 @@ class AirSimDrone:
                 self.add_and_save_measurement(i-1,1,"detect")
 
             else:
-                print(f"Everything safe at tank number: {int(mesh.name.split('_')[-1])+1}! No leackage detected.")
+                print(f"Everything safe at tank number: {i}! No leackage detected.")
                 self.add_and_save_measurement(i-1,1,"safe")
 
             '''

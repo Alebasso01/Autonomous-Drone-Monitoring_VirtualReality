@@ -10,8 +10,8 @@ ARooftop::ARooftop()
 	PrimaryActorTick.bCanEverTick = true;
 
     MaxRotation = 10.0f;
-    OriginalRotation = 5.0f;
-    RotationSpeed = 3.0f;
+    OriginalRotation = 0.0f;
+    RotationSpeed = 0.5f;
     MovementSpeed = 0.0f;  
     FluidReference = nullptr;
     ScaleRoof = 1.0f;
@@ -53,7 +53,7 @@ void ARooftop::MoveAndRotate(bool bFluidMovingUp)
     if (bFluidMovingUp)
         TargetRotation = FRotator(MaxRotation, 0.0f, 0.0f);
     else
-        TargetRotation = FRotator(OriginalRotation, 0.0f, 0.0f);
+        TargetRotation = FRotator(0.0f, 0.0f, 0.0f);
     FRotator NewRotation = FMath::RInterpConstantTo(CurrentRotation, TargetRotation, GetWorld()->GetDeltaSeconds(), RotationSpeed);
 
 
@@ -79,3 +79,5 @@ void ARooftop::SetMovementSpeed(float speed)
 {
     MovementSpeed = speed;
 }
+
+

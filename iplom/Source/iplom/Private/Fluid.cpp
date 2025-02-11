@@ -29,8 +29,16 @@ void AFluid::BeginPlay()
     OriginPosition = GetActorLocation();
 
     // Calculate the end positions for up and down movement
-    EndPositionUp = OriginPosition + FVector(0, 0, 300);
-    EndPositionDown = OriginPosition - FVector(0, 0, 0);
+    if (OriginPosition.Z > -2700.0f)
+    {
+        EndPositionUp = OriginPosition;
+        EndPositionDown = OriginPosition - FVector(0, 0, 300);
+    }
+    else
+    {
+        EndPositionUp = OriginPosition + FVector(0, 0, 300);
+        EndPositionDown = OriginPosition;
+    }
 
     // Set initial direction
     bMovingUp = true;
@@ -112,8 +120,8 @@ void AFluid::CheckForFountainSpawn()
 
         if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) <= Tolerance && !bLeacking)
         {
-            RandomID = FMath::RandRange(1, 10);
-            if (RandomID == 3) 
+            RandomID = FMath::RandRange(1, 1);
+            if (RandomID == 1) 
             {
                 bLeacking = true;
                 OilRefinery->SpawnFountainForFluid(this);
