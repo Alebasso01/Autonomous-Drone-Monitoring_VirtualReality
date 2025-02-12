@@ -14,8 +14,8 @@
 
 #### Supervisors
 
-- [Prof. Gianni Viardo Vercelli]()
-- [Subhransu Sourav Priyadarshan]()
+- Prof. Gianni Viardo Vercelli
+- Subhransu Sourav Priyadarshan
 
 ## Aim of the project
 This project involves the development of a highly realistic simulation environment for
@@ -32,9 +32,18 @@ dynamically adapt monitoring strategies to address anomalous situations.
 - Python 3.7.6
 - C++
 
-#### Unreal Engine Plugins
+### Unreal Engine Plugins
 - Cesium
 - AirSim (Colosseum Version)
 - Modeling
-- Niagara
 
+### How to build the project
+
+1. Clone this repository with `git clone https://github.com/Alebasso01/Autonomous-Drone-Monitoring_VirtualReality.git`
+2. Follow the steps in the [Airsim Build Guide](https://microsoft.github.io/AirSim/build_windows/)
+3. Install Python's requirements in the "requirements.txt" file with `pip install -r requirements.txt` (python 3.7.6)
+4. Generate the Visual Studio files
+5. Build the project
+
+### Troubleshooting
+If you have issues building the project inside a git repository, we suggest you to remove the project folder from the git repository. Doing so should allow you to build the project correctly. If this doesn't work, try removing the folders generated during the previous build. 
