@@ -69,7 +69,7 @@ class AirSimDrone:
         self.client.simSetDetectionFilterRadius(self.camera_name, self.image_type, 200*100)
         
         # Add desired object name to detect in wildcard/regex format
-        self.client.simAddDetectionFilterMeshName(self.camera_name, self.image_type, "BP_prova*")
+        self.client.simAddDetectionFilterMeshName(self.camera_name, self.image_type, "BP_spill*")
         self.matrix_to_csv(self.file_path)
  
  
@@ -161,7 +161,7 @@ class AirSimDrone:
  
             else:
                 print(f"Everything safe at tank number: {i}! No leackage detected.")
-                if self.matrix[i][1] != "Detected":
+                if self.matrix[i-1][1] != "Detected":
                     self.add_and_save_measurement(i-1,1,"Safe")
  
         time.sleep(10)
@@ -187,7 +187,7 @@ class AirSimDrone:
  
    
     def add_and_save_measurement(self,row,col,val):
-        print('aggiunto a matrice')
+        print('added to dashboard')
         self.matrix[row][col] = val
         self.matrix_to_csv(self.file_path)
 
