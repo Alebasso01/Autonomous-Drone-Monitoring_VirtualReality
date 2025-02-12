@@ -146,7 +146,7 @@ public:
 	void SpawnFountainForFluid(AFluid* Fluid);
 	//void CallPythonScript();
 	//void RunTerminalCommand(const FString& Command);
-	int GetTankID(AFountain* Fountain);
+	int32 GetTankID(AFountain* Fountain);
 	void SetDrone(APawn* DronePtr);
 	void setCesiumCamera();
 	void UpdateCesiumCamera();

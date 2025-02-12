@@ -10,8 +10,6 @@ AFluid::AFluid()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-    NiagaraSystem = nullptr;  
-    NiagaraComponent = nullptr;  
     MovementSpeed = 0.0f; 
     bMovingUp = true;
     bStopMoving = false;
@@ -29,21 +27,18 @@ void AFluid::BeginPlay()
     OriginPosition = GetActorLocation();
 
     // Calculate the end positions for up and down movement
-    if (OriginPosition.Z > -2700.0f)
+    if (OriginPosition.Z > 750)
     {
         EndPositionUp = OriginPosition;
         EndPositionDown = OriginPosition - FVector(0, 0, 300);
+        bMovingUp = false;
     }
     else
     {
         EndPositionUp = OriginPosition + FVector(0, 0, 300);
         EndPositionDown = OriginPosition;
+        bMovingUp = true;
     }
-
-    // Set initial direction
-    bMovingUp = true;
-
-   
 }
 
 // Called every frame
@@ -80,7 +75,6 @@ void AFluid::MoveUp(float DeltaTime)
         // Set the new position
         SetActorLocation(NewPosition);
     }
-
 }
 
 // Move the fluid down
@@ -103,7 +97,6 @@ void AFluid::MoveDown(float DeltaTime)
         // Set the new position
         SetActorLocation(NewPosition);
     }
-
 }
 
 void AFluid::SetStopMoving(bool NewMovingState)
@@ -120,35 +113,28 @@ void AFluid::CheckForFountainSpawn()
 
         if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) <= Tolerance && !bLeacking)
         {
-            RandomID = FMath::RandRange(1, 1);
+            RandomID = FMath::RandRange(1, 4);
             if (RandomID == 1) 
             {
                 bLeacking = true;
                 OilRefinery->SpawnFountainForFluid(this);
-                //GetWorld()->GetTimerManager().SetTimer(LeakageTimer, this, &AFluid::StopLeakage, 5.0f, false);
             }
+
         }
         else if (FMath::Abs(CurrentPosition.Z - EndPositionUp.Z) > Tolerance && bLeacking)
             bLeacking = false;
     }
 }
 
+void AFluid::SpawnFountainSelf()
+{
+    OilRefinery->SpawnFountainForFluid(this);
+}
+
 void AFluid::SetOilRefinery(AOilRefinery* InputOilRefinery)
 {
     this->OilRefinery = InputOilRefinery;
 }
-
-
-void AFluid::UpdateNiagaraGridExtent(FVector GridExtent)
-{
-    USceneComponent* child = NiagaraComponent->GetChildComponent(0);
-    UNiagaraComponent* newChild = Cast<UNiagaraComponent>(child);
-    newChild->SetNiagaraVariableVec2(FString("WorldGridSize"), FVector2D(GridExtent.X, GridExtent.Y));
-
-    NiagaraComponent->SetNiagaraVariableVec2(FString("WorldGridSize"), FVector2D(GridExtent.X, GridExtent.Y));  
-}
-
-
 
 void AFluid::SetMovementSpeed(float speed)
 {

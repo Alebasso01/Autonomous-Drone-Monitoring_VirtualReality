@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "NiagaraComponent.h"
-#include "NiagaraSystem.h"
 #include "Fluid.generated.h"
 
 class AOilRefinery;
@@ -26,14 +24,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-    // Niagara system reference
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fluid")
-    UNiagaraSystem* NiagaraSystem;
-
-    // Niagara component to apply the fluid's behavior
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Fluid")
-    UNiagaraComponent* NiagaraComponent;
 
     UPROPERTY(EditAnywhere, Category = "Fluid")
     AOilRefinery* OilRefinery;
@@ -69,9 +59,8 @@ public:
     void SetOilRefinery(AOilRefinery* InputOilRefinery);
     void MoveUp(float DeltaTime);
     void MoveDown(float DeltaTime);
-    void UpdateNiagaraGridExtent(FVector GridExtent);
-    void StopLeakage();
     void SetMovementSpeed(float speed);
+    void SpawnFountainSelf();
     
 
 };

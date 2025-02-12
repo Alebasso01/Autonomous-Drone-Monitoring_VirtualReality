@@ -38,12 +38,4 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FString LeakageFilePath;
-
-	// Function to handle overlap event
-	UFUNCTION()
-	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-		UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex,
-		bool bFromSweep, const FHitResult& SweepResult);
-
-	void SetOilRefinery(AOilRefinery* OilRefineryPtr);
 };

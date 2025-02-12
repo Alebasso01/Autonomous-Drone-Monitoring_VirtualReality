@@ -35,21 +35,12 @@ void AOilRefinery::BeginPlay()
     FVector SpawnPosition = FVector(0.0f, 0.0f, 0.0f);
     FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
 
-    /*
-    coordinate per spawn corrette prima di inserire il drone
-    FVector SpawnPositionTank1 = FVector(9050.0f, -23730.0f, -185480.0f);
-    FVector SpawnPositionTank2 = FVector(8770.0f, -29780.0f, -185480.0f);
-    FVector SpawnPositionTank3 = FVector(8980.0f, -35630.0f, -185450.0f);
-    FVector SpawnPositionTank4 = FVector(8720.0f, -41370.0f, -185500.0f);
-    FVector SpawnPositionTank5 = FVector(9110.0f, -46660.0f, -185500.0f);
-    */
 
-
-    FVector SpawnPositionFountain1 = FVector(-2550.0f, -2630.0f, -2260.0f);
-    FVector SpawnPositionFountain2 = FVector(-3000.0f, -8550.0f, -2030.0f);
-    FVector SpawnPositionFountain3 = FVector(-2950.0f, -14370.0f, -2020.0f);
-    FVector SpawnPositionFountain4 = FVector(-3100.0f, -20000.0f, -2000.0f);
-    FVector SpawnPositionFountain5 = FVector(-3070.0f, -25500.0f, -2025.0f);
+    FVector SpawnPositionFountain1 = FVector(-2550.0f, -2630.0f, 1250.0f);
+    FVector SpawnPositionFountain2 = FVector(-3000.0f, -8550.0f, 1250.0f);
+    FVector SpawnPositionFountain3 = FVector(-2950.0f, -14370.0f, 1250.0f);
+    FVector SpawnPositionFountain4 = FVector(-3150.0f, -20020.0f, 1250.0f);
+    FVector SpawnPositionFountain5 = FVector(-3050.0f, -25500.0f, 1250.0f);
 
     PositionArrayFountain.Add(SpawnPositionFountain1);
     PositionArrayFountain.Add(SpawnPositionFountain2);
@@ -59,11 +50,11 @@ void AOilRefinery::BeginPlay()
 
 
 
-    FVector SpawnPositionTank1 = FVector(-4500.0f, -2630.0f, -2950.0f);
-    FVector SpawnPositionTank2 = FVector(-4840.0f, -8550.0f, -2700.0f);
-    FVector SpawnPositionTank3 = FVector(-4790.0f, -14370.0f, -2700.0f);
-    FVector SpawnPositionTank4 = FVector(-4930.0f, -20000.0f, -2700.0f);
-    FVector SpawnPositionTank5 = FVector(-4550.0f, -25500.0f, -2700.0f);
+    FVector SpawnPositionTank1 = FVector(-4500.0f, -2630.0f, 550.0f);
+    FVector SpawnPositionTank2 = FVector(-4840.0f, -8550.0f, 400.0f);
+    FVector SpawnPositionTank3 = FVector(-4790.0f, -14370.0f, 400.0f);
+    FVector SpawnPositionTank4 = FVector(-4930.0f, -20000.0f, 400.0f);
+    FVector SpawnPositionTank5 = FVector(-4550.0f, -25500.0f, 400.0f);
 
     PositionArray.Add(SpawnPositionTank1);
     PositionArray.Add(SpawnPositionTank2);
@@ -73,11 +64,11 @@ void AOilRefinery::BeginPlay()
 
     FVector IncrementFull = FVector(0.0f, 0.0f, 300.0f);
 
-    FVector SpawnPositionRoof1 = FVector(-6700.0f, -2630.0f, -2700.0f) + IncrementFull;;
-    FVector SpawnPositionRoof2 = FVector(-7000.0f, -8550.0f, -2700.0f);
-    FVector SpawnPositionRoof3 = FVector(-6850.0f, -14450.0f, -2700.0f);
-    FVector SpawnPositionRoof4 = FVector(-7050.0f, -20000.0f, -2700.0f) + IncrementFull;
-    FVector SpawnPositionRoof5 = FVector(-6350.0f, -25450.0f, -2700.0f);
+    FVector SpawnPositionRoof1 = FVector(-6700.0f, -2630.0f, 750.0f);
+    FVector SpawnPositionRoof2 = FVector(-7000.0f, -8550.0f, 750.0f) + IncrementFull;
+    FVector SpawnPositionRoof3 = FVector(-6850.0f, -14450.0f, 750.0f);
+    FVector SpawnPositionRoof4 = FVector(-7050.0f, -20000.0f, 750.0f);
+    FVector SpawnPositionRoof5 = FVector(-6350.0f, -25450.0f, 750.0f) + IncrementFull;
 
     PositionArrayRoof.Add(SpawnPositionRoof1);
     PositionArrayRoof.Add(SpawnPositionRoof2);
@@ -85,11 +76,11 @@ void AOilRefinery::BeginPlay()
     PositionArrayRoof.Add(SpawnPositionRoof4);
     PositionArrayRoof.Add(SpawnPositionRoof5);
 
-    FVector SpawnPositionFluid1 = FVector(-4500.0f, -2630.0f, -2700.0f) + IncrementFull;
-    FVector SpawnPositionFluid2 = FVector(-4840.0f, -8800.0f, -2700.0f);
-    FVector SpawnPositionFluid3 = FVector(-4790.0f, -14370.0f, -2700.0f);
-    FVector SpawnPositionFluid4 = FVector(-4930.0f, -20000.0f, -2700.0f) + IncrementFull;
-    FVector SpawnPositionFluid5 = FVector(-4400.0f, -25500.0f, -2700.0f);
+    FVector SpawnPositionFluid1 = FVector(-4500.0f, -2630.0f, 700.0f);
+    FVector SpawnPositionFluid2 = FVector(-4840.0f, -8500.0f, 700.0f) + IncrementFull;
+    FVector SpawnPositionFluid3 = FVector(-4790.0f, -14370.0f, 700.0f);
+    FVector SpawnPositionFluid4 = FVector(-4930.0f, -20000.0f, 700.0f);
+    FVector SpawnPositionFluid5 = FVector(-4500.0f, -25500.0f, 700.0f) + IncrementFull;
 
 
     PositionArrayFluid.Add(SpawnPositionFluid1);
@@ -98,11 +89,11 @@ void AOilRefinery::BeginPlay()
     PositionArrayFluid.Add(SpawnPositionFluid4);
     PositionArrayFluid.Add(SpawnPositionFluid5);
 
-    FRotator Rotation1 = FRotator(9.0f, 0.0f, 0.0f);
-    FRotator Rotation2 = FRotator(0.0f, 0.0f, 0.0f);
+    FRotator Rotation1 = FRotator(0.0f, 0.0f, 0.0f);
+    FRotator Rotation2 = FRotator(9.0f, 0.0f, 0.0f);
     FRotator Rotation3 = FRotator(0.0f, 0.0f, 0.0f);
-    FRotator Rotation4 = FRotator(9.0f, 0.0f, 0.0f);
-    FRotator Rotation5 = FRotator(0.0f, 0.0f, 0.0f);
+    FRotator Rotation4 = FRotator(0.0f, 0.0f, 0.0f);
+    FRotator Rotation5 = FRotator(9.0f, 0.0f, 0.0f);
 
     RotationArray.Add(Rotation1);
     RotationArray.Add(Rotation2);
@@ -131,18 +122,14 @@ void AOilRefinery::BeginPlay()
     ScaleFluidArray.Add(FluidSize234);
     ScaleFluidArray.Add(FluidSize5);
 
-    //FVector ScaleFountain = FVector(8.0f, 8.0f, 8.0f);
-
-
     ATank* SpawnedTank;
     AFluid* SpawnedFluid;
     ARooftop* SpawnedRoof;
-    //AFountain* SpawnedFountain;
 
     NumberOfTanks = FMath::Clamp(NumberOfTanks, 0, 5);
 
     FVector RoofSpawnPosition;
-    speed = 30.0f;
+    speed = 2.0f;
 
     for (int i = 0; i < NumberOfTanks; i++)
     {
@@ -151,14 +138,10 @@ void AOilRefinery::BeginPlay()
         TankArray.Add(SpawnedTank);
 
         SpawnedFluid = Cast<AFluid>(GetWorld()->SpawnActor<AFluid>(FluidClass, PositionArrayFluid[i], Rotation));
-        //SpawnedFluid->UpdateNiagaraGridExtent(ScaleFluidArray[i]);
         SpawnedFluid->SetActorScale3D(ScaleFluidArray[i]);
         FluidArray.Add(SpawnedFluid);
         SpawnedFluid->SetOilRefinery(this);
         SpawnedFluid->SetMovementSpeed(speed);
-
-
-      
 
         SpawnedRoof = Cast<ARooftop>(GetWorld()->SpawnActor<ARooftop>(RooftopClass, PositionArrayRoof[i], RotationArray[i]));
         SpawnedRoof->SetActorScale3D(ScaleTankArray[i]);
@@ -166,13 +149,6 @@ void AOilRefinery::BeginPlay()
         SpawnedRoof->FluidReference = SpawnedFluid;
         SpawnedRoof->SetScaleRoof(ScaleTankArray[i].X);
         SpawnedRoof->SetMovementSpeed(speed);
-
-        /*SpawnedFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, PositionArray[i] + FountainIncrement, Rotation));
-        FountainArray.Add(SpawnedFountain);
-        SpawnedFountain->SetOilRefinery(this);
-        SpawnedFountain->SetActorScale3D(ScaleFountain);
-        SpawnedFountain->SetActorHiddenInGame(true);
-        */
     }
     MoveFluid();
 
@@ -217,7 +193,6 @@ void AOilRefinery::MoveFluid()
         }
         RoofArray[i]->MoveAndRotate(FluidArray[i]->bMovingUp);
     }
-
 }
 
 void AOilRefinery::SpawnFountainForFluid(AFluid* Fluid)
@@ -226,60 +201,15 @@ void AOilRefinery::SpawnFountainForFluid(AFluid* Fluid)
 
     FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
 
+    GetWorld()->GetTimerManager().SetTimer(CesiumCameraTimer, this, &AOilRefinery::setCesiumCamera, 2.0f, false);
+
     AFountain* SpawnedFountain = Cast<AFountain>(GetWorld()->SpawnActor<AFountain>(FountainClass, PositionArrayFountain[i], Rotation));
     
     FountainArray[i] = SpawnedFountain;
-    SpawnedFountain->SetOilRefinery(this);
-    //SpawnedFountain->SetActorScale3D(FVector());
-    //SpawnedFountain->SetActorHiddenInGame(true);
     
     Fluid->SetStopMoving(true);
-
-    /*
-    if (FountainArray[i]->IsHidden())
-    {
-        FountainArray[i]->SetActorHiddenInGame(false);
-        Fluid->SetStopMoving(true);
-    }
-    else
-    {
-        FountainArray[i]->SetActorHiddenInGame(true);
-        Fluid->SetStopMoving(false);
-    }
-    */
 }
 
-/*bool RunPythonScript()
-{
-    if (!FPythonInterop::IsInitialized())
-    {
-        UE_LOG(LogTemp, Error, TEXT("Python interpreter not initialized"));
-        return false;
-    }
-
-    FString ScriptPath = TEXT("C:\\Users\\Andrea A\\Unreal Projects\\iplom\\PythonClient\\multirotor\\flydetect.py");
-    std::string PythonScriptPath = TCHAR_TO_UTF8(*ScriptPath);
-
-    PyObject* PyFile = PyOpen(PythonScriptPath.c_str(), "r");
-    if (!PyFile)
-    {
-        UE_LOG(LogTemp, Error, TEXT("Could not open Python script: %s"), *ScriptPath);
-        return false;
-    }
-
-    int Result = PyRun_SimpleFile(PyFile, PythonScriptPath.c_str());
-    fclose(PyFile);
-
-    if (Result != 0)
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to execute Python script"));
-        return false;
-    }
-
-    UE_LOG(LogTemp, Log, TEXT("Python script executed successfully"));
-    return true;
-}
-*/
 
 void AOilRefinery::LaunchPythonDroneScript()
 {
@@ -287,14 +217,14 @@ void AOilRefinery::LaunchPythonDroneScript()
     FString PythonExe = TEXT("C:\\Users\\Andrea A\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe");
     FString ScriptPath = TEXT("C:\\Users\\Andrea A\\Unreal Projects\\iplom\\PythonClient\\multirotor\\drone_iplom.py");
 
-    // Full path to powershell.exe (check your system and modify accordingly)
+    // Full path to powershell.exe
     FString PowerShellExe = TEXT("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
 
     // PowerShell command to run the Python script
     FString PowerShellCommand = FString::Printf(TEXT("-NoExit -Command \"& '%s' '%s'\""), *PythonExe, *ScriptPath);
 
     // Output the PowerShell command to debug
-    UE_LOG(LogTemp, Warning, TEXT("PowerShell Command: %s"), *PowerShellCommand);
+    // UE_LOG(LogTemp, Warning, TEXT("PowerShell Command: %s"), *PowerShellCommand);
 
     // Launch the PowerShell process
     PowerShellProcessHandle = FPlatformProcess::CreateProc(
@@ -354,18 +284,22 @@ void AOilRefinery::UpdateDroneHUD()
         MeasurementsArray[i].Split(TEXT(","), &CurrentInclination, &CurrentStatus);
         DroneHUD->SetInclination(CurrentInclination, i);
 
-        if (CurrentStatus.Contains(TEXT("detect")))
+        if (CurrentStatus.Contains(TEXT("Detected")))
         {
             FLinearColor SelectedHUDColor = DroneHUD->GetColor(i).GetSpecifiedColor();
-            if (SelectedHUDColor.Equals(FLinearColor::White))
+            if (!SelectedHUDColor.Equals(FLinearColor::Red))
             {
                 DroneHUD->SetStatusColor(FVector(1, 0, 0), i);
                 PlayAlarmSound();
             }
         }
-        else if(CurrentStatus.Contains(TEXT("safe")))
+        else if(CurrentStatus.Contains(TEXT("Safe")))
         {
             DroneHUD->SetStatusColor(FVector(0, 1, 0), i);
+        }
+        else if (CurrentStatus.Contains(TEXT("Warning")))
+        {
+            DroneHUD->SetStatusColor(FVector(1, 1, 0), i);
         }
         else
         {
@@ -391,78 +325,10 @@ void AOilRefinery::StopAlarmSound()
         CurrentSound->Stop();
 }
 
-/*
-void AOilRefinery::CallPythonScript()
+
+int32 AOilRefinery::GetTankID(AFountain* Fountain)
 {
-    FString ScriptPath = TEXT("C:/Users/Andrea A/Unreal Projects/iplom/PythonClient/multirotor/empty.py");
-    FString Command = FString::Printf(TEXT("python \"%s\""), *ScriptPath);
-
-    // Call RunTerminalCommand with the command
-    RunTerminalCommand(Command);
-}
-*/
-
-/*
-void AOilRefinery::RunTerminalCommand(const FString& Command)
-{
-    UE_LOG(LogTemp, Warning, TEXT("Command in execution: %s"), *Command);
-    FString Output;
-    FString ErrorOutput;
-    int32 ReturnCode = -1;
-
-    // Execute the command
-    bool bSuccess = FPlatformProcess::ExecProcess(*Command, nullptr, &ReturnCode, &Output, &ErrorOutput, nullptr, false);
-
-    if (bSuccess)
-    {
-        UE_LOG(LogTemp, Log, TEXT("Command executed successfully: %s"), *Output);
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("Command failed to execute. Return code: %d"), ReturnCode);
-        if (!ErrorOutput.IsEmpty())
-        {
-            UE_LOG(LogTemp, Error, TEXT("Error Output: %s"), *ErrorOutput);
-        }
-    }
-
-    // Set up pipes for capturing output
-    FProcHandle ProcessHandle = FPlatformProcess::CreateProc(
-        TEXT("python"),   // Only "python" because it's assumed to be in the system PATH
-        *Command,
-        true,    // bLaunchDetached (false if you want to capture output)
-        false,   // bLaunchHidden (false if you want to see the terminal)
-        false,   // bAllowWritingToSTDOUT
-        nullptr, // Process ID (nullptr since we don’t need it)
-        0,       // Thread Priority (0 for default)
-        nullptr, // Working Directory (null uses the current directory)
-        nullptr  // Environment variables (null uses the default environment)
-    );
-
-    if (ProcessHandle.IsValid()) {
-        UE_LOG(LogTemp, Log, TEXT("Python process started successfully."));
-
-        // Now handle the output capture correctly:
-        /*
-        auto StdOutPipe = FPlatformProcess::GetStdOutPipe(ProcessHandle);
-        if (StdOutPipe) {
-            // Read from the stdout pipe here
-            FString ProcessOutput = FPlatformProcess::ReadPipe(StdOutPipe);
-            if (!ProcessOutput.IsEmpty()) {
-                UE_LOG(LogTemp, Log, TEXT("Python script output: %s"), *ProcessOutput);
-            }
-        }
-        *//*
-    }
-    else {
-        UE_LOG(LogTemp, Error, TEXT("Failed to start Python process."));
-    }
-}
-*/
-
-int AOilRefinery::GetTankID(AFountain* Fountain)
-{
-    int i = FountainArray.Find(Fountain);
+    int32 i = FountainArray.Find(Fountain);
     return i;
 }
 
@@ -488,8 +354,7 @@ void AOilRefinery::setCesiumCamera()
     CesiumCameraManager = ACesiumCameraManager::GetDefaultCameraManager(GetWorld());
     CameraID = CesiumCameraManager->AddCamera(CesiumCamera);
 
-    UpdateCamera = true;
-    // UpdateDroneHUD();
+    UpdateCamera = true;   
 }
 
 void AOilRefinery::UpdateCesiumCamera()

@@ -11,7 +11,7 @@ ARooftop::ARooftop()
 
     MaxRotation = 10.0f;
     OriginalRotation = 0.0f;
-    RotationSpeed = 0.5f;
+    RotationSpeed = 0.0f;
     MovementSpeed = 0.0f;  
     FluidReference = nullptr;
     ScaleRoof = 1.0f;
@@ -24,7 +24,6 @@ void ARooftop::BeginPlay()
 	Super::BeginPlay();
 
     OriginPosition = GetActorLocation();
-	
 }
 
 // Called every frame
@@ -78,6 +77,7 @@ void ARooftop::SetScaleRoof(float scale)
 void ARooftop::SetMovementSpeed(float speed)
 {
     MovementSpeed = speed;
+    RotationSpeed = MaxRotation / (300.0f / MovementSpeed);
 }
 
 
