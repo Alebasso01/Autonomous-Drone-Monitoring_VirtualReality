@@ -1,0 +1,79 @@
+{
+    "SeeDocsAt": "https://github.com/Microsoft/AirSim/blob/main/docs/settings.md",
+    "SettingsVersion": 1.2,
+    "SimMode": "Multirotor",
+
+    "OriginGeopoint": {
+        "Latitude": 44.57972402325431,
+        "Longitude": 8.941495999908547,
+        "Altitude": -360
+    },
+    "Vehicles": {
+        "SimpleFlight": {
+            "VehicleType": "SimpleFlight",
+            "DefaultVehicleState": "Armed",
+            "AutoCreate": true,
+            "EnableCollisionPassthrogh": false,
+            "EnableCollisions": true,
+            "AllowAPIAlways": true,
+            "EnableTrace": false,
+            "Sensors": {
+                "DistanceSensor1": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "DrawDebugPoints": true,
+                    "Yaw": 0,
+                    "Pitch": -90,
+                    "Roll": 0,
+                    "MaxDistance": 300,
+                    "X": 5
+                },
+                "DistanceSensor2": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "DrawDebugPoints": true,
+                    "Yaw": 0,
+                    "Pitch": -90,
+                    "Roll": 0,
+                    "MaxDistance": 300,
+                    "X": -5
+                }
+            },
+            "RC": {
+                "RemoteControlID": 0,
+                "AllowAPIWhenDisconnected": false
+            }
+        }
+    },
+
+    "Cameras": {
+        "bottom_center": {
+            "CaptureSettings": [
+                {
+                    "ImageType": 0,
+                    "Width": 640,
+                    "Height": 640,
+                    "FOV_Degrees": 90,
+                    "AutoExposureSpeed": 100,
+                    "AutoExposureBias": 0,
+                    "AutoExposureMaxBrightness": 0.64,
+                    "AutoExposureMinBrightness": 0.03,
+                    "MotionBlurAmount": 0,
+                    "TargetGamma": 1.0,
+                    "ProjectionMode": "",
+                    "OrthoWidth": 5.12
+                }
+            ]
+        }
+    },
+
+
+    "SubWindows": [
+        {
+            "WindowID": 0,
+            "CameraName": "bottom_center",
+            "ImageType": 0,
+            "Visible" :  true
+        }
+    ]
+} 
